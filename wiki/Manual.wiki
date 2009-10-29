@@ -74,6 +74,6 @@
 
 ==Installation:==
    you can build the software using maven (http://maven.apache.org):
-   {{{mvn clean install  appassembler:assemble assembly:assembly}}
+   {{{mvn clean install  appassembler:assemble assembly:assembly}}}
  classes will be compiled into the target/classes directory, a jar file will be added to the target directory. A compressed (zip) package 		 containing automatically generated scripts and libraries is also added to the target directory.
  
