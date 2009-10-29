@@ -19,6 +19,5 @@ The others parts give a deeper description of the software.
   * The maker
   * The flattener
  * [RegularExpressions Regular expressions]
- * [Dictionary]
  
      
