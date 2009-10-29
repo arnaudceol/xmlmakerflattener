@@ -1,0 +1,100 @@
+=Overview=  
+
+==Common features==
+   * The menu bar
+        * File  
+         * *Exit*: it exits the application
+        * Help  
+         * *Documentation*: gives access to this page
+         * *About*: provides information about the software
+
+==The maker: from flat file to XML==  
+  	The window is divided into 3 parts:    
+  	* The flat files panel
+  	* The dictionary panel
+  	* The schema panel
+
+   	* The flat files panel
+      This panel displays the flat files that have been opened. It is possible to   open more than one file by creating a new tab and then opening a file.   
+    	 * *Add a tab:* creates a new tab where another flat file can be opened.
+     	* *Open a file:* opens a flat file and displays its first line in a list. If no separator 	has been yet selected, the whole line will be written in the first cell. When choosing 	the file, it is possible to: 	
+      	* *specify a separator for the line*: by default the lines in the flat file 	  are read 	  one by one. It is, however, possible to define a line separator, lines will then be read until 	  the separator is found. As a consequence the lines are defined by the separator.
+      	* *Skip the first line:* the first line of a flat 	  file often contains the titles of the columns. This feature is particularly useful, in the context of this 	  application, as the column titles will be displayed in the cells and will make easier the mapping to the tree. 	  In this case you should check the box "first line for titles" in order to prompt the application to ignore 	  this line when writing the XML document.
+     	* *Choose the field separator:* chooses the separator that is used to split the fields in the flat file 	lines. 	 The separator must be provided  as a regular expression.
+     	* You can ask to display the *next line* or to go *back to the first one*.
+
+   * The panel for dictionary (replacement values)
+      The dictionary panel is used to load a file that associates values in   the flat file to a new set of values. The dictionary can be used to replace values in the flat file   with the new corresponding values, as defined in the dictionnary file. ===== Structure of a dictionnary: =====  A dictionnary file contains on each line a first word   (the key)  followed by a list of other words (the replacement values). Each word is separate from the   others by a separator that can be specified while loading the file. A dictionnary   can be loaded from a flat file, a tab delimited file...   an example:   Delition|deletion analysis|MI:0033   Mutation|mutation analysis|MI:0074   The dictionnary tool can be used, for instance to replace values by an identifier,   for example, in the case of PSI, the species names by their taxId.   This dictionnary would be loaded from a file in which each line contains   a name and an identifier.     When associating a node to a dictionnary, the user will the choice to replace   the values from the associated field in the flat file with the values in the second or in the   third column of the dictionnary. When a dictionnary does not find a   value, it behaves as if the field were empty.
+
+   * The schema panel 
+     * The tree
+        The main frame displays a tree that represents the loaded XML schema.   Two different icons are used to represent an *attribute*   or an *element* . Text colors in node names give some   indications about the association status of the nodes:    
+         * *grey: (no association)* is the default color
+         * *red:  (error or warning)* indicates that something   is wrong or missing.   It could mean for example that an element that is mandatory according to the schema has   not been associated   to any field in the flat file or default value, or that a  children element is missing.
+         * *black:  (association)* the node has been mapped,   i.e. it is associated to   a field, or to a default value. Alternatively a value may be   automatically generated for this element.
+   
+  		The node names also provide  some information. They take the form *name (type, max: maxOccur)*   where name is the *name* of the element or attribute, type is the XML type and *maxOccurs* the maximum   amount of this element allowed by the schema (only for elements).   When a *choice* is possible, (for instance beetwen an element description and an element reference),   it is displayed as *(choice1|choice2|choice3...)*.   When clicked, this type of node opens a window that allows to select  an element.   
+   
+   * The button panel
+     * The schema:   
+       * *Open a schema:* loads an XML schema and displays a tree representation
+       * *Set your prefix:* you can choose a prefix that will be used as prefix 	for each [value generated] by the XML maker when you request it.
+       * *Check:* checks whether any  association or element is missing and displays 	errors and warning messages.
+   
+     * The node:   
+       * *Duplicate:* creates a new node identical to the selected node and with the same parent. 	It has no effect if the node is not supposed to 	be duplicated (for attributes, or if the maximum amount allowed by the schema is already 	reached: for example if a node "basketball team" contains already five nodes "player on the field", 	a sixth "player on the field" would not be allowed).
+   
+     * *About the node:* provides some information about the node such as its type and 	associations.
+   
+     *  The associations:   
+   		* *Target of the association* the "associate" and "cancel associations" buttons 	allow to establish or cancel an association. 	A set of radio buttons permits to indicate the item type that one wants to associate: 	
+    	* *to flat file:* specifies that the [flat file] selected in the flat file 	  panel has a content 	 that can be described by the selected node. Such an association should be done to a node 	 containing a list, and each line of the flat file is described by an element of the list. For example, 	 if the flat file describes a list of interactions, this file would have to be associated 	 to a node that contains a list of interactions.
+    	* *to field: *the association will be made between the node selected on the tree and the field selected 	 in the [flat file panel]. When writing the XML document, the XML maker will look in 	 this field to find the value for the element.
+    	* *to dictionary:* associates [the dictionary] 	 selected in the dictionary panel to the node 	 selected on the tree. When writing the XML document, the XML maker will look in the flat file 	 for terms that are defined in the dictionary and substitute them (in the associated XML element) 	 with the corresponding values as defined in the dictionary. If the term in the flat file is not defined 	 in the dictionary, no value will be present in the XML file.
+    	* *to default value:* associates a value to the node. A window is opened that allows to type 	 this value. When writing the XML document, the XML maker will always set the element 	 or the attribute described by the node to this value.
+    	* *[to automatic value]:* a unique value will be generated 	 each time the XML maker will try to marshal the selected node selected. The value will look like 	 "prefix-number" where prefix can be changed by clicking on the button _set your prefix_ and number 	 is a number incremented each time such a value is generated. It can be used for example to 	 generate an identifier.
+   
+   		* *Associate:* makes the association according to the checked radio button checked. An association 	of type field, default value or generated value will delete any previous association of one 	of those types to the same node.
+   		* *Cancel:* it cancels  an association (of the type selected by the radio button) 	to the selected node.
+   
+   	* The output:   
+   		* *Preview:* opens a window displaying an overview of the XML code that will be generated 	for the selected node using the values of the current lines in the flat files.
+   		* *Print:* creates the XML document.
+  
+==The flattener: from XML to flat file==
+  	The "flattener" application was developed  to give the opportunity to organize   a subset of the elements of an XML document in a flat file. 
+  	The flattener can   reckon the number of columns  that are needed to represent the information in the   XML document. For example, if an 
+  	element named list can contain, according to the XML schema,    an amount unbounded   of another element called child, the "flattener" will 
+  	first check in every list for   the maximum number of child elements   (and [references] to this type of element) and The output flat file will 
+  	then contain  have on each line the appropriate   amount of fields (even empty) (example: for a node describing an interaction, if each interaction
+  	in the XML documents are interactions between two proteins, but one is an interaction   between three proteins, each line in the flat file will have 
+  	the number of fields   necessary to describe three interactors.   
+  	
+  	
+  	* The tree
+		The main frame displays a tree that describes the loaded XML schema.   The icon code is the same as used for the XML maker.   The colors are used as described here:   
+  		 * *grey: (default)* is the default color
+  		 * *red:  (error or warning)* indicates that the node in the   XML document is assumed to contain a value ,according to the schema.
+  		 * *black:  (association)* the node has been selected to   appear in the final flat file.
+  		 * *blue:  (main node)* the node represents a line in the   flat file. For example for an element interactionList containing interation elements, we would   select the element interaction and each line in the output  will describe an interaction.   If no node has been manually selected to represent a line in the flat file, the flattener chooses   automatically the last node that contains every selected nodes.
+  		When, according to the schema, a *choice* is possible it is displayed as   *(choice1|choice2|choice3...)*.   When clicked, all possible choices are expanded, 
+  		offering the possibility to get each of them in the flat file (if the same choice is not made for each element in the XML document).   
+  		
+  	* The button panel
+  	  	* the schema:   
+  			* *Open a schema:* loads an XML schema and displays its tree representation.
+  			* *Open an XML document:* loads an XML document and displays a preview of the title 	line that will be produced for the flat file. The preview is empty if no document has been 	loaded yet.
+  			* *Node describing a line:* when pressed, the node selected will be considered as 	the node describing a line of the flat file.
+		* the node:   
+  			* *About the node:* gives some information about the node.
+  		* The associations:   
+  			* *Select this node:* the values for the element represented by the selected node 	will appear in the flat file.
+  			* *Unselect the node:* it reverse the selection.
+  			* *Filter:* you can associate a regular expression to this node. Only node with a value 	that match the regular expression will be exported. If the node filtered is an attribute, 	the full element will be filtered.
+  		*  The output:   
+  			* *Choose the separator:* open a window that gives the possibility to choose the 	field separator in the flat file.
+  			* *Print the flat file:* creates the flat file.
+	  
+ 		 About the references and the behavior of the flattener: When the flattener encounters an element of type "refType", it behaves as if it had encountered the element the "refType" is referring to. 
+ 		 Thus when an element is selected, the flat file will contain all those elements and all those that are referenced.
+ 
