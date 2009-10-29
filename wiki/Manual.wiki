@@ -4,7 +4,7 @@
 
   ==Synopsis==
 
-   * Linux: 		
+    * Linux: 		
      * Flattener without Graphical User Interface (GUI): 
     	{{{ sh bin/xmlflattener -mapping mapping-file.xml;  -xmlDocument your PSI1.0 XML document> -o output file; }}}
      * Flattener with GUI:
@@ -13,7 +13,7 @@
     	{{{ sh bin/xmlmaker -mapping mapping-file.xml;   -o output xmlDocument;  -dictionaries dictionaries;  -flatfiles flat files; }}}
      * Maker  without Graphical User Interface: 
     	{{{ sh bin/xmlmaker-gui }}}    
-   * Windows: 		
+    * Windows: 		
      * Flattener without Graphical User Interface (GUI): 
     	{{{ bin/xmlflattener.bat -mapping mapping-file.xml;  -xmlDocument your PSI1.0 XML document> -o output file; }}}
      * Flattener with GUI: 
@@ -24,17 +24,16 @@
     	{{{ bin/xmlmaker-gui.bat }}}
     	
   ==Description==
-   XML Maker and XML Flattener are two applications that allow to convert tab delimited files to XML documents and XML documents to tab-delimited files according to an XML schema.   
-   Both application can be used either with or without graphical interface. The graphical interface allows to load an XML schema and to create a mapping between 		
-   flat (tab delimited) files and XML document. Once a mapping has been created, it can be reused directly on the command line.	
+     XML Maker and XML Flattener are two applications that allow to convert tab delimited  files to XML documents and XML documents to tab-delimited files according to an XML schema.   
+     Both application can be used either with or without graphical interface. The graphical interface allows to load an XML schema and to create a mapping between flat (tab delimited) files and XML document. Once a mapping has been created, it can be reused directly on the command line.	
 	 
-   * Flattener:
+     * Flattener:
 	  To create a mapping file, an XML schema should first be loaded in the GUI. A graphical tree representation of this schema is then created. 
 	  On this tree it is possible first to choose the 'main node', i.e. the node that contains all information that will be displayed on a single 		
 	  line of the output tab-delimited file. Then it is possible to select the elements and attributes that will be exported. 		
 	  The application will automatically calculate the number of columns necessary according to the number of sub-elements found.	
 	 
-   * Maker:  
+     * Maker:  
 	  To create a mapping file, an XML schema should first be loaded in the GUI, then one (or more) flat file. A graphical tree representation of this schema is created. 		
 	  On this tree it is possible first to associate a node to a flat file. An element corresponding to this node will be created in the output XML document 		
 	  for each line of the flat file. At this point the fields of the file can be associated to the nodes of the schema.   Other types of associations are possible: 		  
