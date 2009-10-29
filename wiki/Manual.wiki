@@ -1,8 +1,6 @@
-#Manual for Maker and Flattener
+=XML Maker/Flattener manual=
 
-= Manual =
-
-  ==Synopsis==
+==Synopsis==
 
     * Linux: 		
      * Flattener without Graphical User Interface (GUI): 
@@ -23,7 +21,7 @@
      * Maker  without Graphical User Interface: 
     	{{{ bin/xmlmaker-gui.bat }}}
     	
-  ==Description==
+==Description==
      XML Maker and XML Flattener are two applications that allow to convert tab delimited  files to XML documents and XML documents to tab-delimited files according to an XML schema.   
      Both application can be used either with or without graphical interface. The graphical interface allows to load an XML schema and to create a mapping between flat (tab delimited) files and XML document. Once a mapping has been created, it can be reused directly on the command line.	
 	 
@@ -43,7 +41,7 @@
   	      assigned a value (association to field, default value), to a dictionnary. When a synonym is found, it will be replace by its main value.  
   	      Both applications have been develop on and required a *Java 1.4* environment (or newer) ([http://www.java.com/en/download/index.jsp]). 
   	 
-  ==Options==
+==Options==
    * Flattener (without GUI):  
     * -mapping mapping_file: the mapping file
     * -xmlDocument  document.xml: the XML document to parse
@@ -56,14 +54,14 @@
     * -dictionaries dictionaries; :  names of the dictionary files in the right order, separated by comma
     * -flatfiles flat files;  :      names of the flat files in the right order, separated by comma
     
-  ==Files==
+==Files==
    Some files are available in the data directory. those files are relative to the Protein Standard Initiative (http://psidev.sourceforge.net/) for which this software has been created.   
     * *mif.xsd, MIF2.5.xsd:* PSI standard schema (version 1.0 and 2.5)
     * *flattener-mapping-psi10.xml, flattener-mapping-psi25.xml, maker-mapping-psi10.xml, maker-mapping-psi25.xml:* 	examples of mapping files for both applications
     * *psimaker-template.txt:* template flat file that can be used with the XML Maker application and its respective mapping files.
     * *psimaker-example.txt:* an example  (one line) of use of this template.
 
-  ==Examples==
+==Examples==
    * *PSI 1.0 flattener:* 
    	{{{ sh bin/xmlflattener -mapping data/flattener-mapping-psi10.xml  -xmlDocument your PSI1.0 XML document; -o output file; }}}
    * *PSI 2.5 flattener:* 
@@ -74,6 +72,8 @@
    	{{{ sh bin/xmlmaker -mapping data/maker-mapping-psi25.xml -flatfiles your flat file;  -xmlDocument your PSI2.5 XML document; -o output XML document; }}}
 
 
-  ==Installation:==
-   you can build the software using maven (http://maven.apache.org): *mvn clean install  appassembler:assemble assembly:assembly* classes will be compiled into the target/classes directory, a jar file will be added to the target directory. A compressed (zip) package 		 containing automatically generated scripts and libraries is also added to the target directory.
+==Installation:==
+   you can build the software using maven (http://maven.apache.org):
+   {{{mvn clean install  appassembler:assemble assembly:assembly}}
+ classes will be compiled into the target/classes directory, a jar file will be added to the target directory. A compressed (zip) package 		 containing automatically generated scripts and libraries is also added to the target directory.
  
