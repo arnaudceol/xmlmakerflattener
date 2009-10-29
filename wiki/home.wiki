@@ -1,0 +1,27 @@
+=XML maker/flattener documentation=
+ 
+This is the documentation for the XML Maker and Flattener software. The first part (manual) provides directives and examples for running the applications.
+The others parts give a deeper description of the software.
+
+ 
+ * [Manual]
+  * Synopsis
+  * Description
+  * Options
+  * Environment
+  * Files
+  * Examples
+  * Source
+  * Installation
+  * See-also
+ * [Overview]
+  * Common features
+  * The maker
+  * The flattener
+ * [Regular Expressions]
+ * [Dictionary]
+ 
+ 
+ =Contacts=  
+This software has been created at the University of Roma "Tor Vergata" by 	Arnaud Ceol and the [Mint Group]. 	For any information you can contact me at 	[arnaud@cbm.bio.uniroma2.it].   PSI: the [Proteomics Standards Initiative]
+     
