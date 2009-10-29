@@ -1,0 +1,8 @@
+=Regular expression=
+
+Lot of documentation about regular expressions can be found on the web. We provide here some basic rules and examples of regular expressions that could be used   to define the separators.   
+ * single character: such as *;* or *,* or *.*. The line will be split 	when the character is encountered.
+ * the vertical bar "|": is a *boolean operator*. It means that the separator can   be either the character before or the character after the vertical bar (e.g.: ;|,|. the line will be   split each time a ".", a "," or a ";" will be encountered).
+ * special characters: like "|". Such a caracter has a meaning in a regular expression 	so it has to be protected if we want to use it as a separator. The protection is made by using 	the caracter"\". 	For using the separator "|" we would have to write *\|*.
+ * code for tabulation: *\t*
+ * code for new line:*\n*
