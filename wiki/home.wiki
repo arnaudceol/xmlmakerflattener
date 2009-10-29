@@ -18,7 +18,7 @@ The others parts give a deeper description of the software.
   * Common features
   * The maker
   * The flattener
- * [Regular Expressions]
+ * [RegularExpressions: Regular expressions]
  * [Dictionary]
  
      
