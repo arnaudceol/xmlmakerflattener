@@ -1,0 +1,22 @@
+=XML maker/flattener documentation=
+ 
+This is the start page for the documentation about the XML Maker and Flattener software. The first part (manual) provides directives and examples for running the applications.
+The others parts give a deeper description of the software.
+
+ 
+ * [Manual]
+  * Synopsis
+  * Description
+  * Options
+  * Environment
+  * Files
+  * Examples
+  * Source
+  * Installation
+  * See-also
+ * [Overview]
+  * Common features
+  * The maker
+  * The flattener
+ * [RegularExpressions Regular expressions]
+ 
