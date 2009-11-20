@@ -181,18 +181,18 @@ public class XmlFlattenerGui extends JFrame {
 		Options options = new Options();
 
 		Option option = new Option("mapping", true, "Mapping file");
-		option.setRequired(true);
+		option.setRequired(false);
 		options.addOption(option);
 
 		option = new Option("xmlDocument", true, "XML document to parse");
-		option.setRequired(true);
+		option.setRequired(false);
 		options.addOption(option);
 		option = new Option("schema", true,
 				"Xsd schema, for instance data/MIF25.xsd");
-		option.setRequired(true);
+		option.setRequired(false);
 		options.addOption(option);
 		option = new Option("o", true, "output tab delimited file");
-		option.setRequired(true);
+		option.setRequired(false);
 		options.addOption(option);
 		option = new Option(
 				"validate",
