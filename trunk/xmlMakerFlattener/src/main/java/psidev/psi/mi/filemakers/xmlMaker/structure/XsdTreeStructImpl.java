@@ -1740,7 +1740,7 @@ public class XsdTreeStructImpl extends
 		observable.setMessage("output file: " + outFile.getName());
 		out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		out
-				.write("<!-- created using XmlMakerFlattener v1.0 (http://cvs.sourceforge.net/viewcvs.py/psidev/psi/mi/tools/) -->");
+				.write("<!-- created using XmlMakerFlattener v2 (http://code.google.com/p/xmlmakerflattener/) -->");
 		getMessageManager().sendMessage("start marshalling to file :"
 				+ outFile.getName() + " at " + new Date() , MessageManagerInt.simpleMessage);
 		try {
@@ -1942,7 +1942,7 @@ public class XsdTreeStructImpl extends
 				}
 				int previousLineNumber = lineNumber;
 				lineNumber = 0;
-				
+
 				while (false == endOfFile) {
 					observable.setCurrentLine(lineNumber++);
 					try { /* get each line */
