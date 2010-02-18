@@ -94,10 +94,7 @@ public class XsdTreeStructImpl extends
 	 */
 	public MarshallingObservable observable = new MarshallingObservable();
 
-	/**
-	 * 
-	 * @uml.property name="dictionaries"
-	 */
+
 	public DictionaryContainer dictionaries = new DictionaryContainer();
 
 	public ArrayList<XsdNode> unduplicableNodes = new ArrayList<XsdNode>();
@@ -112,22 +109,13 @@ public class XsdTreeStructImpl extends
 
 	private String pathFilter;
 
-	/**
-	 * 
-	 * @uml.property name="flatFiles"
-	 */
+
 	public FlatFileContainer flatFiles = new FlatFileContainer();
 
-	/**
-	 * 
-	 * @uml.property name="name"
-	 */
 	public String name = "";
 
 	/**
 	 * id for autogeneration: type MINT-001
-	 * 
-	 * @uml.property name="id"
 	 */
 	public String id = "";
 
@@ -670,9 +658,10 @@ public class XsdTreeStructImpl extends
 	public boolean checkAttribute(XsdNode node) {
 		if (node.isRequired 
 				/** TODO: check if it works, 2006-05-25 */ 
-				&& !isAffected(node) && !hasDefaultValue(node)
-				&& !associatedAutogeneration.contains(node))
-//				&& (getValue(node) == null || getValue(node).length()==0))
+				&& false == isAffected(node) && false == hasDefaultValue(node)
+				&& false == associatedAutogeneration.contains(node)
+//			    && (getValue(node) == null || getValue(node).length()==0)
+				)
 				{
 			node.isCheckedOk = false;
 //			getMessageManager().sendMessage(printPath(node.getPath()) + " missing value", MessageManagerInt.errorMessage);
@@ -717,8 +706,8 @@ public class XsdTreeStructImpl extends
 		/* simpleType */
 		if (type.isSimpleType()) {
 			if (node.isRequired  
-					&& !isAffected(node) && !hasDefaultValue(node)
-					&& !associatedAutogeneration.contains(node)
+					&& false == isAffected(node) && false == hasDefaultValue(node)
+					&& false == associatedAutogeneration.contains(node)
 //					&& (getValue(node) == null || getValue(node).length()==0)
 					) {
 				node.isCheckedOk = false;			
@@ -739,7 +728,7 @@ public class XsdTreeStructImpl extends
 	 * means user has to make a choice
 	 */
 	public boolean checkGroup(XsdNode node) {
-		
+
 		boolean hasUsedChild = false;
 		
 		if (node.transparent) {
@@ -757,16 +746,23 @@ public class XsdTreeStructImpl extends
 			return checkedOk;
 		}
 
+		
+		Enumeration<XsdNode> children = node.children();
+		
+		// if it doesn't have children, treat it as an attribute
+		if (false == children.hasMoreElements()) {
+			return checkAttribute(node);
+		}
+	
+		
 		boolean errors = false;
 		/* check if number of subelts is correct */
 		HashMap<String, Object> maxOccurs = new HashMap<String, Object>();
 		HashMap<String, Integer> minOccurs = new HashMap<String, Integer>();
 
-		Enumeration<XsdNode> children = node.children();
-
+	
 		while (children.hasMoreElements()) {
 			XsdNode child = (XsdNode) children.nextElement();
-			
 			int nbDuplications = 1;
 			String previousFilter = pathFilter;
 			String filter = "";
@@ -797,11 +793,12 @@ public class XsdTreeStructImpl extends
 
 				switch (((Annotated) child.getUserObject()).getStructureType()) {
 				case Structure.ATTRIBUTE:
-					if (false == isChildOk) 
+					if (false == isChildOk) { 
 						errors = true;
+					}
 					break;
 				case Structure.GROUP:
-					if (((Group) child.getUserObject()).getOrder().getType() == Order.CHOICE && !child.isExtended) {
+					if (((Group) child.getUserObject()).getOrder().getType() == Order.CHOICE && false == child.isExtended) {
 //						getMessageManager().sendMessage(printPath(child.getPath()) +" please expand this node ", MessageManagerInt.errorMessage);
 						errors = true;
 					} else if (false == isChildOk) {
@@ -874,11 +871,11 @@ public class XsdTreeStructImpl extends
 				 */
 			}
 		}
-		node.isCheckedOk = !errors;
+		node.isCheckedOk = (false == errors);
 		
-		if (node.isRequired && !hasUsedChild)
+		
+		if (node.isRequired && false == hasUsedChild)
 			node.isCheckedOk = false;
-
 
 		return node.isCheckedOk;
 	}
