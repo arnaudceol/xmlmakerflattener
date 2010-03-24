@@ -155,7 +155,7 @@ public class XmlMakerGui extends JFrame {
 					f.setSeparators(ffm.getSeparators());
 
 					try {
-						URL url = new File(ffm.getFileURL()).toURL();
+						URL url = new File(ffm.getFileURL()).toURI().toURL();
 						if (url != null)
 							f.load(url);
 					} catch (FileNotFoundException fe) {
@@ -180,7 +180,7 @@ public class XmlMakerGui extends JFrame {
 				try {
 					URL url = null;
 					if (dm.getFileURL() != null)
-						url = new File(dm.getFileURL()).toURL();
+						url = new File(dm.getFileURL()).toURI().toURL();
 					if (url != null)
 						d = new Dictionary(url, dm.getSeparator(),
 								dm.caseSensitive);
@@ -200,15 +200,21 @@ public class XmlMakerGui extends JFrame {
 			/* tree */
 			TreeMapping treeMapping = mapping.getTree();
 
-			File schema = new File(treeMapping.getSchemaURL());
+			String schemaUrl = treeMapping.getSchemaURL();
 			try {
-				treePanel.loadSchema(schema);
+				if (schemaUrl.contains("http:")) {
+					treePanel.loadURLSchema(new URL(schemaUrl));
+				} else {
+					treePanel.loadSchema(new File(schemaUrl));										
+				}
+				
 				((XsdTreeStructImpl) treePanel.xsdTree)
 						.loadMapping(treeMapping);
 
 				treePanel.xsdTree.check();
-				treePanel.reload();
 
+				treePanel.reload();
+								
 				/* set titles for flat files */
 				for (int i = 0; i < mapping.flatFiles.size(); i++) {
 					try {
@@ -222,7 +228,7 @@ public class XmlMakerGui extends JFrame {
 
 			} catch (FileNotFoundException fe) {
 				JOptionPane.showMessageDialog(new JFrame(), "File not found: "
-						+ schema.getName(), "[PSI makers]",
+						+ schemaUrl, "[PSI makers]",
 						JOptionPane.ERROR_MESSAGE);
 			} catch (IOException ioe) {
 				JOptionPane.showMessageDialog(new JFrame(),
@@ -298,36 +304,12 @@ public class XmlMakerGui extends JFrame {
 		}
 	}
 
-	/**
-	 * 
-	 * @uml.property name="treePanel"
-	 * @uml.associationEnd
-	 * @uml.property name="treePanel" multiplicity="(1 1)"
-	 */
 	public XsdTreePanelImpl treePanel;
 
-	/**
-	 * 
-	 * @uml.property name="flatFileTabbedPanel"
-	 * @uml.associationEnd
-	 * @uml.property name="flatFileTabbedPanel" multiplicity="(1 1)"
-	 */
 	public FlatFileTabbedPanel flatFileTabbedPanel;
 
-	/**
-	 * 
-	 * @uml.property name="dictionnaryLists"
-	 * @uml.associationEnd
-	 * @uml.property name="dictionnaryLists" multiplicity="(1 1)"
-	 */
 	public DictionaryPanel dictionnaryLists;
 
-	/**
-	 * 
-	 * @uml.property name="xsdTree"
-	 * @uml.associationEnd
-	 * @uml.property name="xsdTree" multiplicity="(1 1)"
-	 */
 	public XsdTreeStructImpl xsdTree;
 
 	public XmlMakerGui() {

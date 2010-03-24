@@ -85,10 +85,12 @@ public class XmlMaker {
 
 	public void load(Mapping mapping) throws MalformedURLException,
 			FileMakersException {
-		xsdTree.flatFiles.flatFiles = new ArrayList();
+		xsdTree.flatFiles.flatFiles = new ArrayList<FlatFile>();
 
 		/* flat files */
 		for (int i = 0; i < mapping.flatFiles.size(); i++) {
+			if (mapping.flatFiles.get(i) == null)
+				continue;
 			FlatFileMapping ffm = (FlatFileMapping) mapping.flatFiles.get(i);
 			FlatFile f = new FlatFile();
 			f.lineSeparator = ffm.lineSeparator;
@@ -129,9 +131,9 @@ public class XmlMaker {
 		/* tree */
 		TreeMapping treeMapping = mapping.getTree();
 
-		File schema = new File(treeMapping.getSchemaURL());
+//		File schema = new File(treeMapping.getSchemaURL());
 		try {
-			xsdTree.loadSchema(schema);
+			xsdTree.loadSchema(new URL(treeMapping.getSchemaURL()));
 		} catch (IOException ioe) {
 			log.error("ERROR: unable to load schema "
 					+ treeMapping.getSchemaURL());

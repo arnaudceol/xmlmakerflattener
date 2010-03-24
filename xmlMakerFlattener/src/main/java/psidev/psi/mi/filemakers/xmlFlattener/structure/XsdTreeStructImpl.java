@@ -201,7 +201,7 @@ public class XsdTreeStructImpl extends AbstractXsdTreeStruct {
 		factory.setValidating(validateDocument);
 
 		factory.setAttribute(SCHEMA_LANGUAGE, XML_SCHEMA);
-		factory.setAttribute(SCHEMA_SOURCE, schemaFile);
+		factory.setAttribute(SCHEMA_SOURCE, schemaURL);
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			log.debug("XML document url: "+url.toString());
@@ -1231,7 +1231,7 @@ public class XsdTreeStructImpl extends AbstractXsdTreeStruct {
 			System.exit(1);
 		}
 		
-		loadSchema(schema);
+		loadSchema(schema.toURI().toURL());
 
 //		ArrayList<String> expandedChoices = new ArrayList<String>();
 //		

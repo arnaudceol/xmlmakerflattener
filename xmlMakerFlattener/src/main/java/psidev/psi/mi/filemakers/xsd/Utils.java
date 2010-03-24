@@ -28,8 +28,6 @@ import org.apache.cocoon.util.NetUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import psidev.psi.mi.filemakers.xmlFlattener.XmlFlattener;
-
 /**
  * @author Arnaud Ceol, University of Rome "Tor Vergata", Mint group,
  *         arnaud.ceol@gmail.com
@@ -37,13 +35,15 @@ import psidev.psi.mi.filemakers.xmlFlattener.XmlFlattener;
  */
 public class Utils {
 	
+	public final static String defaultXsdUrl = "http://psidev.sourceforge.net/mi/rel25/src/MIF253.xsd";
+	
 	private static final Log log = LogFactory.getLog(Utils.class);
 	
 	/** dimension for buttons */
 	private static final Dimension buttonsDimension = new Dimension(60, 17);
 
 	public static String lastVisitedDirectory = ".";
-
+	
 	public static void setDefaultSize(JButton button) {
 		button.setPreferredSize(Utils.buttonsDimension);
 		button.setMinimumSize(Utils.buttonsDimension);
@@ -121,10 +121,13 @@ public class Utils {
 	 *         not http)
 	 */
 	public static URL relativizeURL(URL url) {
+		
 		if (url == null)
 			return url;
-		if (url.getProtocol() == "http")
+		if ("http".equals(url.getProtocol())) {
 			return url;
+		}
+		
 		try {
 			/*
 			 * relativize only if the file is on a sub-path
@@ -149,6 +152,7 @@ public class Utils {
 	 *         not http)
 	 */
 	public static URL absolutizeURL(URL url) {
+		
 		if (url == null)
 			return url;
 		if (url.getProtocol() == "http") {
@@ -202,6 +206,7 @@ public class Utils {
 	}
 
 	public static URL absolutizeURL(String url) {
+		
 		try {
 			if (url.startsWith("http:") || url.startsWith("file:")) {
 				return new URL(url);

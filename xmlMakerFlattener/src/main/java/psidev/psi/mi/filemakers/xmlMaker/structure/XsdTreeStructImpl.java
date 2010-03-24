@@ -948,7 +948,7 @@ public class XsdTreeStructImpl extends
 		factory.setValidating(true);
 
 		factory.setAttribute(SCHEMA_LANGUAGE, XML_SCHEMA);
-		factory.setAttribute(SCHEMA_SOURCE, schemaFile);
+		factory.setAttribute(SCHEMA_SOURCE, schemaURL);
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			builder.setErrorHandler(xmlErrorHandler);
@@ -1067,6 +1067,15 @@ public class XsdTreeStructImpl extends
 //			attributesString += " " + (String)it.next();
 //			attributesString += "=\""+(String)it.next()+"\"";
 		}
+		
+		
+		// if root node :
+		if (node == treeModel.getRoot()) {
+			attributesString += " xsi:schemaLocation=\""+schema.getTargetNamespace()+" "+schemaURL+"\"";
+			attributesString += " xmlns=\""+schema.getTargetNamespace()+"\"";
+			attributesString += " xmlns:xsi=\""+schema.getSchemaNamespace()+"\"";		
+		}
+		
 		attributesString = attributesString.trim();
 		if (attributesString.length() > 0) 
 			attributesString = " " + attributesString;
@@ -1255,9 +1264,15 @@ public class XsdTreeStructImpl extends
 		mapping.setId(this.id);
 		mapping.setAutoDuplicate(this.autoDuplicate);
 		mapping.setManageChoices(this.manageChoices);
-		mapping
+		
+		if ("http".equals(getSchemaURL().getProtocol())) {
+			mapping
+			.setSchemaURL(this.getSchemaURL().toString());			
+		}else {
+			mapping
 				.setSchemaURL(Utils.relativizeURL(this.getSchemaURL())
 						.getPath());
+		}
 		ArrayList<String> associatedAutogeneration = new ArrayList<String>();
 		for (int i = 0; i < this.associatedAutogeneration.size(); i++) {
 			associatedAutogeneration
@@ -1396,7 +1411,7 @@ public class XsdTreeStructImpl extends
 	public void loadMapping(TreeMapping mapping) throws MalformedURLException {
 		
 		this.setId(mapping.id);
-		this.setSchemaURL(new File(mapping.getSchemaURL()).toURL());
+//		this.setSchemaURL(new File(mapping.getSchemaURL()).toURI().toURL());
 		this.setAutoDuplicate(mapping.autoDuplicate);
 		this.setManageChoices(mapping.manageChoices);
 
@@ -1740,6 +1755,16 @@ public class XsdTreeStructImpl extends
 				.write("<!-- created using XmlMakerFlattener v2 (http://code.google.com/p/xmlmakerflattener/) -->");
 		getMessageManager().sendMessage("start marshalling to file :"
 				+ outFile.getName() + " at " + new Date() , MessageManagerInt.simpleMessage);
+		
+//		XsdNode root = ((XsdNode) treeModel.getRoot());
+//	
+//		AttributeDecl annotated = new AttributeDecl(this.schema);
+//		annotated.setName("ciccio");
+//		annotated.setDefaultValue("beeeloooooooooooooooo");
+//		
+//				((Annotated) root.getUserObject()).
+//		root.add(new XsdNode(annotated));
+//		
 		try {
 			out.write(xmlMake());
 		} catch (FileMakersException fme) {

@@ -21,6 +21,8 @@ import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.Box;
@@ -56,7 +58,7 @@ public abstract class AbstractXsdTreePanel extends JPanel {
 	public AbstractXsdTreeStruct xsdTree;
 
 	public void loadSchema(File file) throws FileNotFoundException, IOException {
-		xsdTree.loadSchema(file);
+		xsdTree.loadSchema(file.toURI().toURL());
 
 		ToolTipManager.sharedInstance().registerComponent(xsdTree.tree);
 		setCellRenderer();
@@ -64,6 +66,16 @@ public abstract class AbstractXsdTreePanel extends JPanel {
 		// xsdTree.tree.setShowsRootHandles(true);
 	}
 
+
+	public void loadURLSchema(URL url) throws FileNotFoundException, IOException {
+		xsdTree.loadSchema(url);
+
+		ToolTipManager.sharedInstance().registerComponent(xsdTree.tree);
+		setCellRenderer();
+		xsdTree.tree.addTreeSelectionListener(new XsdTreeSelectionListener());
+		// xsdTree.tree.setShowsRootHandles(true);
+	}
+	
 	public JScrollPane scrollPane;
 
 	/**
@@ -129,7 +141,7 @@ public abstract class AbstractXsdTreePanel extends JPanel {
 			return;
 		}
 		try {
-			loadSchema(fileChooser.getSelectedFile());
+			loadURLSchema(fileChooser.getSelectedFile().toURI().toURL());
 			xsdTree.getMessageManager().sendMessage(
 					"XML schema " + fileChooser.getSelectedFile().getName()
 							+ " successfully loaded.",
@@ -146,6 +158,44 @@ public abstract class AbstractXsdTreePanel extends JPanel {
 		}
 	}
 
+	/**
+	 * open a file chooser allowing to choose the file containing the schema,
+	 * read it, create the tree, and finaly reinitialize everything using a
+	 * previous tree. Those reinitialisations have to be defined in the
+	 * <code>emptySelectionLists</code> method
+	 */
+	public void loadUrlSchema() {
+				
+		String defaultUrl ;
+		
+		if (xsdTree.schemaURL != null) {
+			defaultUrl = xsdTree.schemaURL.toString();
+		} else {
+			defaultUrl = Utils.defaultXsdUrl;
+		}
+		
+		String value = (String) JOptionPane.showInputDialog(new JFrame(),
+					"Schema URL", defaultUrl);
+
+		try {
+			loadURLSchema(new URL(value));
+			xsdTree.getMessageManager().sendMessage(
+					"XML schema url " + value
+							+ " successfully loaded.",
+					MessageManagerInt.simpleMessage);
+		} catch (MalformedURLException fe) {
+			xsdTree.getMessageManager().sendMessage(
+					"URL " + value
+							+ " not fount", MessageManagerInt.errorMessage);
+		} catch (IOException ioe) {
+			ioe.printStackTrace(System.err);
+			xsdTree.getMessageManager().sendMessage(
+					"Unable to load url "
+							+ value,
+					MessageManagerInt.errorMessage);
+		}
+	}	
+	
 	/**
 	 * when a node is clicked by the mouse, deploy it using the
 	 * <code>extendPath</code> method
