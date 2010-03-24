@@ -14,10 +14,9 @@
  */
 package psidev.psi.mi.filemakers.xsd;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -77,18 +76,19 @@ public abstract class AbstractXsdTreeStruct extends Observable {
 	 */
 	public static String SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
 
-	public void loadSchema(File file) throws FileNotFoundException, IOException {
+	public void loadSchema(URL schemaUrl) throws FileNotFoundException, IOException {
 		emptySelectionLists();
-		schemaFile = file;
-		schemaURL = schemaFile.toURL();
-		FileReader xsd = new FileReader(schemaURL.getFile());
+		
+		this.schemaURL = schemaUrl;
 
+		InputStream in = schemaURL.openStream();
+		
 		/* test: get keyz/keyref */
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder parser = factory.newDocumentBuilder();
-			Document d = parser.parse(file);
+			Document d = parser.parse(in);
 			for (int i = 0; i < d.getChildNodes().getLength(); i++) {
 				getKeys(d.getChildNodes().item(i));
 			}
@@ -96,9 +96,10 @@ public abstract class AbstractXsdTreeStruct extends Observable {
 		} catch (Exception e) {
 			log.error(e);
 		}
-		SchemaReader reader = new SchemaReader(new InputSource(xsd));
+		
+		in = schemaURL.openStream();
+		SchemaReader reader = new SchemaReader(new InputSource(in));
 		schema = reader.read();
-
 		createTree();
 		Utils.lastVisitedDirectory = schemaURL.getPath();
 		Utils.lastVisitedSchemaDirectory = schemaURL.getPath();
@@ -216,7 +217,7 @@ public abstract class AbstractXsdTreeStruct extends Observable {
 	 * the xsl file describing the schema
 	 * 
 	 */
-	public File schemaFile;
+//	public File schemaFile;
 
 	public URL schemaURL;
 
@@ -489,57 +490,6 @@ public abstract class AbstractXsdTreeStruct extends Observable {
 		treeModel.reload();
 	}
 
-	// /**
-	// * @return Returns the refAttribute.
-	// *
-	// * @uml.property name="refAttribute"
-	// */
-	// public static String getRefAttribute2() {
-	// return refAttribute;
-	// }
-	//
-	// /**
-	// * @param refAttribute
-	// * The refAttribute to set.
-	// */
-	// public static void setRefAttribute(String refAttribute) {
-	// AbstractXsdTreeStruct.refAttribute = refAttribute;
-	// }
-
-	// /**
-	// * @return Returns the refType.
-	// *
-	// * @uml.property name="refType"
-	// */
-	// public static String getRefType() {
-	// return refType;
-	// }
-	//
-	// /**
-	// * @param refType
-	// * The refType to set.
-	// */
-	// public static void setRefType(String refType) {
-	// AbstractXsdTreeStruct.refType = refType;
-	// }
-
-	// /**
-	// * @return Returns the refTypeList.
-	// *
-	// * @uml.property name="refTypeList"
-	// */
-	// public static ArrayList getRefTypeList() {
-	// return refTypeList;
-	// }
-
-	// /**
-	// * @param refTypeList
-	// * The refTypeList to set.
-	// */
-	// public static void setRefTypeList(ArrayList refTypeList) {
-	// AbstractXsdTreeStruct.refTypeList = refTypeList;
-	// }
-
 	/**
 	 * @return Returns the autoDuplicate.
 	 * 
@@ -597,22 +547,6 @@ public abstract class AbstractXsdTreeStruct extends Observable {
 
 	public void setSchema(Schema schema) {
 		this.schema = schema;
-	}
-
-	/**
-	 * @return Returns the schemaFile.
-	 * 
-	 */
-	public File getSchemaFile() {
-		return schemaFile;
-	}
-
-	/**
-	 * @param schemaFile
-	 *            The schemaFile to set.
-	 */
-	public void setSchemaFile(File schemaFile) {
-		this.schemaFile = schemaFile;
 	}
 
 	/**

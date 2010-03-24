@@ -349,9 +349,14 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 		outputBox.setBorder(new TitledBorder("Output"));
 
 		/* add a button for loading a XML Schema */
-		JButton loadFileb = new JButton("Open");
+		JButton loadFileb = new JButton("Open File");
 		Utils.setDefaultSize(loadFileb);
 		loadFileb.addActionListener(new LoadSchemaListener());
+
+		JButton loadURLb = new JButton("Open URL");
+		Utils.setDefaultSize(loadURLb);
+		loadURLb.addActionListener(new LoadURLSchemaListener());
+
 
 		JButton setIdb = new JButton("Prefix");
 		Utils.setDefaultSize(setIdb);
@@ -384,6 +389,7 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 		printb.addActionListener(new PrintListener());
 
 		treeBox.add(loadFileb);
+		treeBox.add(loadURLb);
 		treeBox.add(setIdb);
 		treeBox.add(checkb);
 		treeBox.setBorder(new TitledBorder("Schema"));
@@ -628,6 +634,14 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 			loadSchema();
 		}
 	}
+	
+	public class LoadURLSchemaListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			loadUrlSchema();
+		}
+	}
+
+	
 
 	public class LoadListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
