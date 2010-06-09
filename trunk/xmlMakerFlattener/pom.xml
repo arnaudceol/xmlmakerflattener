@@ -60,7 +60,7 @@
 					<installArtifacts>false</installArtifacts>
 					<repositoryLayout>flat</repositoryLayout>
 					<repositoryName>lib</repositoryName>
-					<extraJvmArguments>-Xms128m</extraJvmArguments>
+					<extraJvmArguments>-Xms128m  -Xmx512m</extraJvmArguments>
 					<platforms>
 						<platform>windows</platform>
 						<platform>unix</platform>
