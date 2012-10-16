@@ -21,7 +21,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -42,6 +41,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -64,6 +67,7 @@ import psidev.psi.mi.filemakers.xmlMaker.structure.XsdTreeStructImpl;
 import psidev.psi.mi.filemakers.xsd.JTextPaneMessageManager;
 import psidev.psi.mi.filemakers.xsd.Utils;
 import psidev.psi.mi.filemakers.xsd.XsdNode;
+//import org.exolab.castor.xml.Marshaller;
 
 /**
  * Main class for the PSI files maker: this class displays a graphical interface
@@ -115,6 +119,35 @@ public class XmlMakerGui extends JFrame {
 
 			Utils.lastVisitedDirectory = mappingFile.getPath();
 			Utils.lastVisitedMappingDirectory = mappingFile.getPath();
+			
+			JAXBContext jaxbContext = JAXBContext.newInstance(Mapping.class);
+			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			Mapping mapping = (Mapping) jaxbUnmarshaller.unmarshal(fin);
+			load(mapping);
+			fin.close();
+			
+		} catch (FileNotFoundException fe) {
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Unable to load mapping" + mappingFile.getName(),
+					"[PSI makers: PSI maker] load mapping",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (IOException ioe) {
+			JOptionPane.showMessageDialog(new JFrame(),
+					"IO error, unable to load mapping",
+					"[PSI makers: PSI maker] load mapping",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (JAXBException jbe) {
+			System.out.println("Not a JAXB file, try with old format");
+			loadOldFormat(mappingFile);
+		}
+	}
+
+	private void loadOldFormat(File mappingFile) {
+		try {
+			FileInputStream fin = new FileInputStream(mappingFile);
+
+			Utils.lastVisitedDirectory = mappingFile.getPath();
+			Utils.lastVisitedMappingDirectory = mappingFile.getPath();
 			// Utils.lastMappingFile = mappingFile.getName();
 			// Create XML encoder.
 			XMLDecoder xdec = new XMLDecoder(fin);
@@ -136,22 +169,22 @@ public class XmlMakerGui extends JFrame {
 					"IO error, unable to load mapping",
 					"[PSI makers: PSI maker] load mapping",
 					JOptionPane.ERROR_MESSAGE);
-		}
+		} 
 	}
-
+	
 	private void load(Mapping mapping) {
 		try {
 
 			/* flat files */
 			flatFileTabbedPanel.flatFileContainer.flatFiles = new ArrayList<FlatFile>();
 
-			for (int i = 0; i < mapping.flatFiles.size(); i++) {
-				FlatFileMapping ffm = (FlatFileMapping) mapping.flatFiles
+			for (int i = 0; i < mapping.getFlatFiles().size(); i++) {
+				FlatFileMapping ffm = (FlatFileMapping) mapping.getFlatFiles()
 						.get(i);
 				FlatFile f = new FlatFile();
 				if (ffm != null) {
-					f.lineSeparator = ffm.lineSeparator;
-					f.firstLineForTitles = ffm.fisrtLineForTitle;
+					f.lineSeparator = ffm.getLineSeparator();
+					f.firstLineForTitles = ffm.isFisrtLineForTitle();
 					f.setSeparators(ffm.getSeparators());
 
 					try {
@@ -183,7 +216,7 @@ public class XmlMakerGui extends JFrame {
 						url = new File(dm.getFileURL()).toURI().toURL();
 					if (url != null)
 						d = new Dictionary(url, dm.getSeparator(),
-								dm.caseSensitive);
+								dm.isCaseSensitive());
 					else
 						d = new Dictionary();
 				} catch (FileNotFoundException fe) {
@@ -216,7 +249,7 @@ public class XmlMakerGui extends JFrame {
 				treePanel.reload();
 								
 				/* set titles for flat files */
-				for (int i = 0; i < mapping.flatFiles.size(); i++) {
+				for (int i = 0; i < mapping.getFlatFiles().size(); i++) {
 					try {
 						flatFileTabbedPanel.tabbedPane.setTitleAt(i,
 								((XsdNode) xsdTree.getAssociatedFlatFiles()
@@ -264,8 +297,9 @@ public class XmlMakerGui extends JFrame {
 			FileOutputStream fos = new FileOutputStream(fc.getSelectedFile());
 
 			// Create XML encoder.
-			XMLEncoder xenc = new XMLEncoder(fos);
-
+			JAXBContext jaxbContext = JAXBContext.newInstance(Mapping.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+			
 			Mapping mapping = new Mapping();
 			mapping.setTree(((XsdTreeStructImpl) treePanel.xsdTree)
 					.getMapping());
@@ -273,23 +307,20 @@ public class XmlMakerGui extends JFrame {
 			/* dictionaries */
 			for (int i = 0; i < treePanel.dictionaryPanel.dictionaries
 					.getDictionaries().size(); i++) {
-				// DictionaryMapping dm = ((Dictionary) xsdTree.dictionaries
-				// .getDictionaries().get(i)).getMapping();
-				mapping.dictionaries.add(((Dictionary) xsdTree.dictionaries
+				mapping.getDictionaries().add(((Dictionary) xsdTree.dictionaries
 						.getDictionaries().get(i)).getMapping());
 			}
 
 			/* flat files */
-			for (int i = 0; i < xsdTree.flatFiles.flatFiles.size(); i++) {
-				// FlatFileMapping fm = (xsdTree.flatFiles.getFlatFile(i))
-				// .getMapping();
-				mapping.flatFiles.add((xsdTree.flatFiles.getFlatFile(i))
+			for (int i = 0; i < xsdTree.flatFiles.flatFiles.size(); i++) {		
+				mapping.getFlatFiles().add((xsdTree.flatFiles.getFlatFile(i))
 						.getMapping());
 			}
-
-			xenc.writeObject(mapping);
-
-			xenc.close();
+			
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			 
+			jaxbMarshaller.marshal(mapping, fos);
+			
 			fos.close();
 		} catch (FileNotFoundException fe) {
 			JOptionPane.showMessageDialog(new JFrame(), "Unable to write file",
@@ -535,7 +566,7 @@ public class XmlMakerGui extends JFrame {
 				if (flatFiles != null) {
 					String[] files = flatFiles.replaceAll("'", "").split(",");
 					for (int j = 0; j < files.length; j++) {
-						((FlatFileMapping) mapping.getFlatFiles().get(j)).fileURL = files[j];
+						((FlatFileMapping) mapping.getFlatFiles().get(j)).setFileURL(files[j]);
 						System.out.println("flat file " + j + ": " + files[j]);
 					}
 				}

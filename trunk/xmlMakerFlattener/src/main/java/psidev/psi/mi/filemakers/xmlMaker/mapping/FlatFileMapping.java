@@ -16,6 +16,8 @@ package psidev.psi.mi.filemakers.xmlMaker.mapping;
 
 import java.util.HashMap;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * 
  * The bean that can keep the mapping information about the flat files.
@@ -26,6 +28,27 @@ import java.util.HashMap;
  */
 public class FlatFileMapping {
 
+	@XmlTransient
+	public String fileURL;
+
+	/**
+	 * line separator: if null, lines will be read one by one in the file else
+	 * the readline function will read the file until it find the separator
+	 */
+	@XmlTransient
+	public String lineSeparator = null;
+
+	/**
+	 * associate a path to a separator
+	 */
+	@XmlTransient
+	public HashMap<String, String> separators = new HashMap<String, String>();
+
+	@XmlTransient
+	public boolean fisrtLineForTitle;
+	
+		
+	
 	public String getLineSeparator() {
 		return lineSeparator;
 	}
@@ -42,20 +65,6 @@ public class FlatFileMapping {
 		this.separators = separators;
 	}
 
-	public String fileURL;
-
-	/**
-	 * line separator: if null, lines will be read one by one in the file else
-	 * the readline function will read the file until it find the separator
-	 */
-	public String lineSeparator = null;
-
-	/**
-	 * associate a path to a separator
-	 */
-	public HashMap<String, String> separators = new HashMap<String, String>();
-
-	public boolean fisrtLineForTitle;
 
 	public boolean isFisrtLineForTitle() {
 		return fisrtLineForTitle;

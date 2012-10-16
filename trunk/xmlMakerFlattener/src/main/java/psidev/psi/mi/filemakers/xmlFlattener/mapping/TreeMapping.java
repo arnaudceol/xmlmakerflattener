@@ -17,6 +17,9 @@ package psidev.psi.mi.filemakers.xmlFlattener.mapping;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * 
  * This class is used as a Bean to keep all information about the mapping and
@@ -26,25 +29,55 @@ import java.util.HashMap;
  *         arnaud.ceol@gmail.com
  *  
  */
+@XmlRootElement
 public class TreeMapping {
 	
+	@XmlTransient
 	public ArrayList<String> selections = new ArrayList<String>();
 
 	/**
 	 * the separator for the flat file
 	 */
+	@XmlTransient
 	public String separator = "\t";
 
+	@XmlTransient
 	public HashMap<String, String> associatedNames = new HashMap<String, String>();
 
 	/**
 	 * the node associated to a line of the flat file. if null, the printer will
 	 * look for the deeper node that is an ancestor of every selection.
 	 */
+	@XmlTransient
 	public String lineNode = null;
 
+	@XmlTransient
 	public String schemaURL;
 
+	
+	@XmlTransient
+	public String documentURL;
+	
+	/**
+	 * this hashmap keep trace of choices made by user when expanding the tree.
+	 * It is usefull for example in case of saving/loading . It associate a path
+	 * (String) to a name.
+	 */
+	@XmlTransient
+	public ArrayList<String> expendChoices = new ArrayList<String>();
+
+
+	/**
+	 * this map contains regular expression used to filter XML node if a node do
+	 * not validate the regexp, itself or its parent element (in case of
+	 * attribute) will be ignored
+	 */
+	@XmlTransient
+	public HashMap<String, String> elementFilters = new HashMap<String, String>();
+
+
+	
+	
 	/**
 	 * @return Returns the lineNode.
 	 */
@@ -105,8 +138,6 @@ public class TreeMapping {
 		this.separator = separator;
 	}
 
-	public String documentURL;
-
 	/**
 	 * @return Returns the documentURL.
 	 */
@@ -137,13 +168,7 @@ public class TreeMapping {
 		this.associatedNames = associatedNames;
 	}
 
-	/**
-	 * this hashmap keep trace of choices made by user when expanding the tree.
-	 * It is usefull for example in case of saving/loading . It associate a path
-	 * (String) to a name.
-	 */
-	public ArrayList<String> expendChoices = new ArrayList<String>();
-
+	
 	/**
 	 * @return Returns the expendChoices.
 	 *  
@@ -162,13 +187,6 @@ public class TreeMapping {
 	}
 
 	/**
-	 * this map contains regular expression used to filter XML node if a node do
-	 * not validate the regexp, itself or its parent element (in case of
-	 * attribute) will be ignored
-	 */
-	public HashMap<String, String> elementFilters = new HashMap<String, String>();
-
-	/**
 	 * @return Returns the elementFilters.
 	 */
 	public HashMap<String, String> getElementFilters() {
@@ -183,20 +201,4 @@ public class TreeMapping {
 		this.elementFilters = elementFilters;
 	}
 
-//	public int numerotation_type;
-//
-//	/**
-//	 * @return Returns the numerotation_type.
-//	 */
-//	public int getNumerotation_type() {
-//		return numerotation_type;
-//	}
-//
-//	/**
-//	 * @param numerotation_type
-//	 *            The numerotation_type to set.
-//	 */
-//	public void setNumerotation_type(int numerotation_type) {
-//		this.numerotation_type = numerotation_type;
-//	}
 }

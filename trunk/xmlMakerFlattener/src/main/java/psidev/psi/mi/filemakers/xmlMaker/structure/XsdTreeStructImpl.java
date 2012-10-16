@@ -1410,18 +1410,18 @@ public class XsdTreeStructImpl extends
 
 	public void loadMapping(TreeMapping mapping) throws MalformedURLException {
 		
-		this.setId(mapping.id);
+		this.setId(mapping.getId());
 //		this.setSchemaURL(new File(mapping.getSchemaURL()).toURI().toURL());
-		this.setAutoDuplicate(mapping.autoDuplicate);
-		this.setManageChoices(mapping.manageChoices);
+		this.setAutoDuplicate(mapping.isAutoDuplicate());
+		this.setManageChoices(mapping.isManageChoices());
 
 //		this.setExpendChoices(mapping.expendChoices);
 
 		int i = 0;
-		while (i < mapping.expendChoices.size()) {
-			String path = (String) mapping.expendChoices.get(i);
+		while (i < mapping.getExpendChoices().size()) {
+			String path = (String) mapping.getExpendChoices().get(i);
 			i++;
-			String choice = (String) mapping.expendChoices.get(i);
+			String choice = (String) mapping.getExpendChoices().get(i);
 			i++;
 //			int index = path.indexOf(".");
 //			String subpath = path;
@@ -1435,7 +1435,7 @@ public class XsdTreeStructImpl extends
 		}
 
 //		for (i = 0; i < mapping.associatedAutogeneration.size(); i++) {
-		for (String path : mapping.associatedAutogeneration) {
+		for (String path : mapping.getAssociatedAutogeneration()) {
 			XsdNode node = getNodeByPath(path);
 			node.useOnlyThis();
 			associateAutoGenerateValue(node);
@@ -1443,51 +1443,51 @@ public class XsdTreeStructImpl extends
 
 //		it = mapping.associatedValues.keySet().iterator();
 //		while (it.hasNext()) {
-		for (String path : mapping.associatedValues.keySet()){
+		for (String path : mapping.getAssociatedValues().keySet()){
 //			String path = (String) it.next();
 //			String field = (String) mapping.associatedValues.get(path);
 			XsdNode node = getNodeByPath(path);
 			node.useOnlyThis();
-			this.associatedValues.put(node, mapping.associatedValues.get(path));
+			this.associatedValues.put(node, mapping.getAssociatedValues().get(path));
 		}
 
 //		it = mapping.validationRegexps.keySet().iterator();
 //		while (it.hasNext()) {
-		for (String path :mapping.validationRegexps.keySet()) {
+		for (String path :mapping.getValidationRegexps().keySet()) {
 //			String field = (String) mapping.validationRegexps.get(path);
 			XsdNode node = getNodeByPath(path);
-			this.validationRegexps.put(node, mapping.validationRegexps
+			this.validationRegexps.put(node, mapping.getValidationRegexps()
 					.get(path));
 		}
 
 //		it = mapping.associatedOpenDictionary.keySet().iterator();
 //		while (it.hasNext()) {
 //			String path = (String) it.next();
-		for (String path : mapping.associatedOpenDictionary.keySet()) {
+		for (String path : mapping.getAssociatedOpenDictionary().keySet()) {
 			this.associatedOpenDictionary.put(getNodeByPath(path),
-					mapping.associatedOpenDictionary.get(path));
+					mapping.getAssociatedOpenDictionary().get(path));
 		}
 
 //		it = mapping.associatedClosedDictionary.keySet().iterator();
 //		while (it.hasNext()) {
 //			String path = (String) it.next();
-		for (String path : mapping.associatedClosedDictionary.keySet()) {
+		for (String path : mapping.getAssociatedClosedDictionary().keySet()) {
 			this.associatedClosedDictionary.put(getNodeByPath(path),
-					mapping.associatedClosedDictionary.get(path));
+					mapping.getAssociatedClosedDictionary().get(path));
 		}
 
 //		it = mapping.associatedDictionaryColumn.keySet().iterator();
 //		while (it.hasNext()) {
 //			String path = (String) it.next();
-		for (String path : mapping.associatedDictionaryColumn.keySet()) {
+		for (String path : mapping.getAssociatedDictionaryColumn().keySet()) {
 			associatedDictionaryColumn.put(getNodeByPath(path),
-					mapping.associatedDictionaryColumn.get(path));
+					mapping.getAssociatedDictionaryColumn().get(path));
 		}
 
-		for (i = 0; i < mapping.associatedFlatFiles.size(); i++) {
+		for (i = 0; i < mapping.getAssociatedFlatFiles().size(); i++) {
 			rootNode.use();
 			this.associatedFlatFiles
-					.add(getNodeByPath((String) mapping.associatedFlatFiles
+					.add(getNodeByPath((String) mapping.getAssociatedFlatFiles()
 							.get(i)));
 		}
 
@@ -1496,25 +1496,25 @@ public class XsdTreeStructImpl extends
 //		it = mapping.associatedDuplicableFields.keySet().iterator();
 //		while (it.hasNext()) {
 //			String path = (String) it.next();
-		for (String path : mapping.associatedDuplicableFields.keySet()) {
+		for (String path : mapping.getAssociatedDuplicableFields().keySet()) {
 			XsdNode node = getNodeByPath(path);
 			node.useOnlyThis();
 			associatedDuplicableFields.put(getNodeByPath(path),
-					mapping.associatedDuplicableFields.get(path));
+					mapping.getAssociatedDuplicableFields().get(path));
 		}
 
 //		it = mapping.associatedFields.keySet().iterator();
 //		while (it.hasNext()) {
 //			String path = (String) it.next();
-		for (String path : mapping.associatedFields.keySet()) {
+		for (String path : mapping.getAssociatedFields().keySet()) {
 			XsdNode node = getNodeByPath(path);
 			node.useOnlyThis();
-			associatedFields.put(getNodeByPath(path), mapping.associatedFields
+			associatedFields.put(getNodeByPath(path), mapping.getAssociatedFields()
 					.get(path));
 		}
 
 //		for (i = 0; i < mapping.unduplicableNodes.size(); i++) {
-		for (String path: mapping.unduplicableNodes) {
+		for (String path: mapping.getUnduplicableNodes()) {
 			XsdNode node = getNodeByPath(path);
 			unduplicableNodes.add(node);
 		}
