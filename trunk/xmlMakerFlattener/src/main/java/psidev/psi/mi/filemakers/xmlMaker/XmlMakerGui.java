@@ -235,11 +235,7 @@ public class XmlMakerGui extends JFrame {
 
 			String schemaUrl = treeMapping.getSchemaURL();
 			try {
-				if (schemaUrl.contains("http:")) {
-					treePanel.loadURLSchema(new URL(schemaUrl));
-				} else {
-					treePanel.loadSchema(new File(schemaUrl));										
-				}
+				treePanel.loadSchema(schemaUrl);
 				
 				((XsdTreeStructImpl) treePanel.xsdTree)
 						.loadMapping(treeMapping);
