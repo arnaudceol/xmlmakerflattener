@@ -14,6 +14,7 @@
  */
 package psidev.psi.mi.filemakers.xsd;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -76,8 +77,18 @@ public abstract class AbstractXsdTreeStruct extends Observable {
 	 */
 	public static String SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
 
+	
+	public void loadSchema(String schema) throws FileNotFoundException, IOException {
+		if (schema.contains("http:")) {
+			loadSchema(new URL(schema));			
+		} else {
+			loadSchema(new File(schema).toURI().toURL());
+		}
+	}
+	
 	public void loadSchema(URL schemaUrl) throws FileNotFoundException, IOException {
 		emptySelectionLists();
+		
 		
 		this.schemaURL = schemaUrl;
 

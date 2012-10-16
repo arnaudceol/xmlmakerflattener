@@ -135,7 +135,7 @@ public class XmlMaker {
 		TreeMapping treeMapping = mapping.getTree();
 
 		try {
-			xsdTree.loadSchema(new URL(treeMapping.getSchemaURL()));
+			xsdTree.loadSchema(treeMapping.getSchemaURL());
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 			
