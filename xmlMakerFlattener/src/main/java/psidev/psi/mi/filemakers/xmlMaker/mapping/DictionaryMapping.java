@@ -14,6 +14,8 @@
  */
 package psidev.psi.mi.filemakers.xmlMaker.mapping;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * 
  * The bean that can keep the mapping information about the dictionaries.
@@ -24,12 +26,16 @@ package psidev.psi.mi.filemakers.xmlMaker.mapping;
  */
 public class DictionaryMapping {
 
+	@XmlTransient
 	public String fileURL;
 
+	@XmlTransient
 	public boolean caseSensitive;
 
+	@XmlTransient
 	public String separator;
 
+	
 	public boolean isCaseSensitive() {
 		return caseSensitive;
 	}

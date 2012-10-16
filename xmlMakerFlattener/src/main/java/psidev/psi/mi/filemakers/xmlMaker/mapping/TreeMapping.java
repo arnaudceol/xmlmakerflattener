@@ -17,6 +17,8 @@ package psidev.psi.mi.filemakers.xmlMaker.mapping;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * 
  * The bean that can keep the mapping information.
@@ -26,13 +28,18 @@ import java.util.HashMap;
  *  
  */
 public class TreeMapping {
-
+	
+	@XmlTransient
+	public 	String schemaURL;
+	
+	@XmlTransient
 	public String name = "";
 
 	/**
 	 * id for autogeneration: type MINT-001
 	 *  
 	 */
+	@XmlTransient
 	public String id = "ID";
 
 	/**
@@ -40,26 +47,31 @@ public class TreeMapping {
 	 * tab file
 	 *  
 	 */
+	@XmlTransient
 	public HashMap<String, String> associatedFields = new HashMap<String, String>();
 
+	@XmlTransient
 	public HashMap<String, String> associatedDuplicableFields = new HashMap<String, String>();
 
 	/**
 	 * associate a default value to a node
 	 *  
 	 */
+	@XmlTransient
 	public HashMap<String, String> associatedValues = new HashMap<String, String>();
 
 	/**
 	 * associate a list dictionnary value to a node
 	 *  
 	 */
+	@XmlTransient
 	public HashMap<String, Integer> associatedOpenDictionary = new HashMap<String, Integer>();
 
 	/**
 	 * associate a list dictionnary value to a node
 	 *  
 	 */
+	@XmlTransient
 	public HashMap<String, Integer> associatedClosedDictionary = new HashMap<String, Integer>();
 
 	/**
@@ -68,24 +80,28 @@ public class TreeMapping {
 	 * to a node.
 	 *  
 	 */
+	@XmlTransient
 	public HashMap<String, Integer> associatedDictionaryColumn = new HashMap<String, Integer>();
 
 	/**
 	 * list of the nodes for wich the value has to be generated
 	 *  
 	 */
+	@XmlTransient
 	public ArrayList<String> associatedAutogeneration = new ArrayList<String>();
 
 	/**
 	 * list of the nodes for wich not use filters
 	 *  
 	 */
+	@XmlTransient
 	public ArrayList<String> unduplicableNodes = new ArrayList<String>();
 
 	/**
 	 * list of the nodes at which are associated each flat file
 	 *  
 	 */
+	@XmlTransient
 	public ArrayList<String> associatedFlatFiles = new ArrayList<String>();
 
 	/**
@@ -94,6 +110,7 @@ public class TreeMapping {
 	 * possibility to choose what element to expand. Else all possibility is
 	 * displayed
 	 */
+	@XmlTransient
 	public boolean manageChoices;
 
 	/**
@@ -102,6 +119,7 @@ public class TreeMapping {
 	 * required according by the schema
 	 *  
 	 */
+	@XmlTransient
 	public boolean autoDuplicate;
 
 	/**
@@ -110,6 +128,7 @@ public class TreeMapping {
 	 * (String) to a name.
 	 *  
 	 */
+	@XmlTransient
 	public ArrayList<String> expendChoices = new ArrayList<String>();
 
 	/**
@@ -281,7 +300,6 @@ public class TreeMapping {
 		this.name = name;
 	}
 
-	public String schemaURL;
 
 	public String getSchemaURL() {
 		return schemaURL;
@@ -351,7 +369,7 @@ public class TreeMapping {
 		this.unduplicableNodes = unduplicableNodes;
 	}
 
-	public HashMap<String, String> validationRegexps = new HashMap<String, String>();
+	private HashMap<String, String> validationRegexps = new HashMap<String, String>();
 
 	/**
 	 * @return Returns the validationRegexps.

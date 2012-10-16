@@ -14,8 +14,12 @@
  */
 package psidev.psi.mi.filemakers.xmlMaker.mapping;
 
+
 import java.util.ArrayList;
 import java.util.Date;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * 
@@ -25,14 +29,29 @@ import java.util.Date;
  *         arnaud.ceol@gmail.com
  *  
  */
+@XmlRootElement
 public class Mapping {
+
+	@XmlTransient
+	public Date date;
+
+	@XmlTransient
+	public TreeMapping tree;
+
+	@XmlTransient
+	public ArrayList<DictionaryMapping> dictionaries = new ArrayList<DictionaryMapping>();
+
+	@XmlTransient
+	public ArrayList<FlatFileMapping> flatFiles = new ArrayList<FlatFileMapping>();
 
 	public ArrayList<DictionaryMapping> getDictionaries() {
 		return dictionaries;
 	}
 
-	public Date date;
-
+	public void setDictionaries(ArrayList<DictionaryMapping> dictionaries) {
+		this.dictionaries = dictionaries;
+	}
+	
 	public ArrayList<FlatFileMapping> getFlatFiles() {
 		return flatFiles;
 	}
@@ -41,12 +60,6 @@ public class Mapping {
 		this.flatFiles = flatFiles;
 	}
 
-	public TreeMapping tree;
-
-	public ArrayList<DictionaryMapping> dictionaries = new ArrayList<DictionaryMapping>();
-
-	public ArrayList<FlatFileMapping> flatFiles = new ArrayList<FlatFileMapping>();
-
 	public Date getDate() {
 		return date;
 	}
@@ -54,7 +67,7 @@ public class Mapping {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
+	
 	public TreeMapping getTree() {
 		return tree;
 	}
@@ -63,8 +76,5 @@ public class Mapping {
 		this.tree = tree;
 	}
 
-	public void setDictionaries(ArrayList<DictionaryMapping> dictionaries) {
-		this.dictionaries = dictionaries;
-	}
 
 }

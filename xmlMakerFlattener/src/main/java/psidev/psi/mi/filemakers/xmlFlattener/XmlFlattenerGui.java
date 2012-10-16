@@ -37,6 +37,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -52,6 +56,7 @@ import org.xml.sax.SAXException;
 import psidev.psi.mi.filemakers.xmlFlattener.gui.XsdTreePanelImpl;
 import psidev.psi.mi.filemakers.xmlFlattener.mapping.TreeMapping;
 import psidev.psi.mi.filemakers.xmlFlattener.structure.XsdTreeStructImpl;
+import psidev.psi.mi.filemakers.xmlMaker.mapping.Mapping;
 import psidev.psi.mi.filemakers.xsd.JTextPaneMessageManager;
 import psidev.psi.mi.filemakers.xsd.MessageManagerInt;
 import psidev.psi.mi.filemakers.xsd.Utils;
@@ -370,25 +375,39 @@ public class XmlFlattenerGui extends JFrame {
 			Utils.lastVisitedDirectory = fc.getSelectedFile().getPath();
 			Utils.lastVisitedMappingDirectory = fc.getSelectedFile().getPath();
 
-			FileInputStream fin = new FileInputStream(fc.getSelectedFile());
+			try {
+				FileInputStream fin = new FileInputStream(fc.getSelectedFile());
 
-			// Create XML encoder.
-			XMLDecoder xdec = new XMLDecoder(fin);
-
-			/* get mapping */
-			TreeMapping treeMapping = (TreeMapping) xdec.readObject();
+				JAXBContext jaxbContext = JAXBContext
+						.newInstance(TreeMapping.class);
+				Unmarshaller jaxbUnmarshaller = jaxbContext
+						.createUnmarshaller();
+				TreeMapping treeMapping = (TreeMapping) jaxbUnmarshaller
+						.unmarshal(fin);
+				((XsdTreeStructImpl) treePanel.xsdTree)
+						.loadMapping(treeMapping);
+				fin.close();
+			} catch (JAXBException jbe) {
+				System.out.println("Not a JAXB file, try with old format");
+				FileInputStream fin = new FileInputStream(fc.getSelectedFile());
+				// Create XML encoder.
+				XMLDecoder xdec = new XMLDecoder(fin);
+				/* get mapping */
+				TreeMapping treeMapping = (TreeMapping) xdec.readObject();
+				((XsdTreeStructImpl) treePanel.xsdTree)
+						.loadMapping(treeMapping);
+				xdec.close();
+				fin.close();
+			}
 
 			/* tree */
 
-			((XsdTreeStructImpl) treePanel.xsdTree).loadMapping(treeMapping);
 			treePanel.updatePreview();
 
 			treePanel.setTreeSelectionListener();
 			treePanel.setCellRenderer();
 			treePanel.xsdTree.check();
 			treePanel.reload();
-			xdec.close();
-			fin.close();
 		} catch (FileNotFoundException fe) {
 			treePanel.xsdTree.getMessageManager().sendMessage(
 					"unable to load mapping file (file not found)",
@@ -437,11 +456,11 @@ public class XmlFlattenerGui extends JFrame {
 			FileOutputStream fos = new FileOutputStream(fc.getSelectedFile());
 
 			// Create XML encoder.
-			XMLEncoder xenc = new XMLEncoder(fos);
+			JAXBContext jaxbContext = JAXBContext.newInstance(TreeMapping.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
-			xenc.writeObject(((XsdTreeStructImpl) treePanel.xsdTree)
-					.getMapping());
-			xenc.close();
+			jaxbMarshaller.marshal(((XsdTreeStructImpl) treePanel.xsdTree)
+					.getMapping(), fos);
 			fos.close();
 		} catch (FileNotFoundException fe) {
 			JOptionPane.showMessageDialog(new JFrame(), "Unable to write file",

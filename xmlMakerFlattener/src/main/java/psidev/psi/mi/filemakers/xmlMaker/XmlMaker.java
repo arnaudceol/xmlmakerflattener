@@ -22,6 +22,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -32,7 +36,6 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import psidev.psi.mi.filemakers.xmlFlattener.XmlFlattener;
 import psidev.psi.mi.filemakers.xmlMaker.mapping.DictionaryMapping;
 import psidev.psi.mi.filemakers.xmlMaker.mapping.FlatFileMapping;
 import psidev.psi.mi.filemakers.xmlMaker.mapping.Mapping;
@@ -88,13 +91,13 @@ public class XmlMaker {
 		xsdTree.flatFiles.flatFiles = new ArrayList<FlatFile>();
 
 		/* flat files */
-		for (int i = 0; i < mapping.flatFiles.size(); i++) {
-			if (mapping.flatFiles.get(i) == null)
+		for (int i = 0; i < mapping.getFlatFiles().size(); i++) {
+			if (mapping.getFlatFiles().get(i) == null)
 				continue;
-			FlatFileMapping ffm = (FlatFileMapping) mapping.flatFiles.get(i);
+			FlatFileMapping ffm = (FlatFileMapping) mapping.getFlatFiles().get(i);
 			FlatFile f = new FlatFile();
-			f.lineSeparator = ffm.lineSeparator;
-			f.firstLineForTitles = ffm.fisrtLineForTitle;
+			f.lineSeparator = ffm.getLineSeparator();
+			f.firstLineForTitles = ffm.isFisrtLineForTitle();
 			f.setSeparators(ffm.getSeparators());
 			try {
 				URL url = Utils.absolutizeURL(ffm.getFileURL());
@@ -111,13 +114,13 @@ public class XmlMaker {
 		/* dictionaries */
 		xsdTree.dictionaries.dictionaries = new ArrayList<Dictionary>();
 
-		for (int i = 0; i < mapping.dictionaries.size(); i++) {
-			DictionaryMapping dm = (DictionaryMapping) mapping.dictionaries
+		for (int i = 0; i < mapping.getDictionaries().size(); i++) {
+			DictionaryMapping dm = (DictionaryMapping) mapping.getDictionaries()
 					.get(i);
 			try {
 				URL url = Utils.absolutizeURL(dm.getFileURL());
 				Dictionary d1 = new Dictionary(url, dm.getSeparator(),
-						dm.caseSensitive);
+						dm.isCaseSensitive());
 				xsdTree.dictionaries.dictionaries.add(d1);
 			} catch (IOException ioe) {
 				log.error("ERROR: unable to load dictionary file "
@@ -131,10 +134,11 @@ public class XmlMaker {
 		/* tree */
 		TreeMapping treeMapping = mapping.getTree();
 
-//		File schema = new File(treeMapping.getSchemaURL());
 		try {
 			xsdTree.loadSchema(new URL(treeMapping.getSchemaURL()));
 		} catch (IOException ioe) {
+			ioe.printStackTrace();
+			
 			log.error("ERROR: unable to load schema "
 					+ treeMapping.getSchemaURL());
 			throw new FileMakersException("unable to load schema "
@@ -210,14 +214,30 @@ public class XmlMaker {
 		log.info("mapping = " + mappingFileName + ", output = " + xmlFile);
 
 		FileInputStream fin = new FileInputStream(mappingFileName);
+		
+		Mapping mapping;
+		
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance(Mapping.class);
+			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			mapping = (Mapping) jaxbUnmarshaller.unmarshal(fin);		
+
+			fin.close();
+		} catch (JAXBException jbe) {
+			System.out.println("Doesn't look like the right mapping format, trying with the old one.");
+			fin = new FileInputStream(mappingFileName);
+			XMLDecoder xdec = new XMLDecoder(fin);
+			mapping = (Mapping) xdec.readObject();
+			xdec.close();
+			fin.close();
+			System.out.println("Ok, mapping loaded.");
+		}
 		// Create XML decoder.
-		XMLDecoder xdec = new XMLDecoder(fin);
-		Mapping mapping = (Mapping) xdec.readObject();
 
 		if (flatFiles != null) {
 			String[] files = flatFiles.replaceAll("'", "").split(",");
 			for (int j = 0; j < files.length; j++) {
-				((FlatFileMapping) mapping.getFlatFiles().get(j)).fileURL = files[j];
+				((FlatFileMapping) mapping.getFlatFiles().get(j)).setFileURL(files[j]);
 				log.info("flat file " + j + ": " + files[j]);
 			}
 		}
