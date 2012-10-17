@@ -74,17 +74,18 @@ import psidev.psi.mi.filemakers.xsd.XsdNode;
 /**
  * 
  * This class overides the abstract class AbstractXslTree to provide a tree
- * representation of a XML schema, with management of marshaling of several
- * flat files to a XML file that respects the schema
+ * representation of a XML schema, with management of marshaling of several flat
+ * files to a XML file that respects the schema
  * 
  * @author Arnaud Ceol, University of Rome "Tor Vergata", Mint group,
  *         arnaud.ceol@gmail.com
- *  
+ * 
  */
-public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTreePanel {
+public class XsdTreePanelImpl extends
+		psidev.psi.mi.filemakers.xsd.AbstractXsdTreePanel {
 
 	private static final Log log = LogFactory.getLog(XsdTreePanelImpl.class);
-	
+
 	public class GenericAssociationListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			doAssociation();
@@ -96,13 +97,14 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 				.getLastSelectedPathComponent();
 
 		if (selectedNode == null) {
-			xsdTree.getMessageManager().sendMessage("no node seletected", MessageManagerInt.errorMessage);
+			xsdTree.getMessageManager().sendMessage("no node seletected",
+					MessageManagerInt.errorMessage);
 			return;
 		}
 
 		if (flatFileAssociation.isSelected()) {
-			associateFlatFile(selectedNode, flatFileTabbedPanel
-					.getSelectedIndex());
+			associateFlatFile(selectedNode,
+					flatFileTabbedPanel.getSelectedIndex());
 			return;
 		}
 
@@ -116,13 +118,9 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 		if (!((XsdTreeStructImpl) xsdTree)
 				.canHaveValue((XsdNode) ((XsdTreeStructImpl) xsdTree).tree
 						.getLastSelectedPathComponent())) {
-			xsdTree.getMessageManager().sendMessage("no value can be associated to this node", MessageManagerInt.errorMessage);
-//			JOptionPane
-//			.showMessageDialog(
-//					new JFrame(),
-//					"No value can be associated to this node.",
-//					"[XML maker]",
-//					JOptionPane.ERROR_MESSAGE);	
+			xsdTree.getMessageManager().sendMessage(
+					"no value can be associated to this node",
+					MessageManagerInt.errorMessage);
 			return;
 		}
 
@@ -140,22 +138,15 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 	/** use as default value when the user is asked for a default value */
 	private String lastValueEntered = "";
 
-	/**
-	 * 
-	 * @uml.property name="flatFileTabbedPanel"
-	 */
 	public FlatFileTabbedPanel flatFileTabbedPanel;
 
 	/**
 	 * panel for dictionnaries
-	 * 
-	 * @uml.property name="dictionaryPanel"
 	 */
 	public DictionaryPanel dictionaryPanel;
 
 	/**
 	 * @return Returns the associationButtons.
-	 *  
 	 */
 	public ButtonGroup getAssociationButtons() {
 		return associationButtons;
@@ -164,7 +155,6 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 	/**
 	 * @param associationButtons
 	 *            The associationButtons to set.
-	 *  
 	 */
 	public void setAssociationButtons(ButtonGroup associationButtons) {
 		this.associationButtons = associationButtons;
@@ -287,9 +277,9 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 		messagePane.setEditable(false);
 
 		JScrollPane scrollpane = new JScrollPane(messagePane);
-		scrollpane.setMaximumSize(new Dimension(Short.MAX_VALUE, 150));	
-		scrollpane.setMinimumSize(new Dimension(200, 150));	
-		scrollpane.setPreferredSize(new Dimension(200, 150));	
+		scrollpane.setMaximumSize(new Dimension(Short.MAX_VALUE, 150));
+		scrollpane.setMinimumSize(new Dimension(200, 150));
+		scrollpane.setPreferredSize(new Dimension(200, 150));
 		scrollpane
 				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollpane
@@ -320,7 +310,7 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 
 	public JRadioButton flatFileAssociation;
 
-//	File logoutFile;
+	// File logoutFile;
 
 	/**
 	 * create a button panel that includes buttons for loading the schema, to
@@ -329,22 +319,22 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 	 * the node, print the XML file or just have a preview of it.
 	 */
 	public Box getButtonPanel() {
-//		associationLabel.setEditable(false);
+		// associationLabel.setEditable(false);
 
 		Box buttonsPanel = new Box(BoxLayout.Y_AXIS);
 
-		 JPanel treeBox = new  JPanel();//
-		 treeBox.setLayout(new BoxLayout(treeBox, BoxLayout.Y_AXIS));//(BoxLayout.Y_AXIS);
+		JPanel treeBox = new JPanel();//
+		treeBox.setLayout(new BoxLayout(treeBox, BoxLayout.Y_AXIS));// (BoxLayout.Y_AXIS);
 
-//		Box mappingBox = new Box(BoxLayout.Y_AXIS);
-//		mappingBox.setBorder(new TitledBorder("Mapping"));
+		// Box mappingBox = new Box(BoxLayout.Y_AXIS);
+		// mappingBox.setBorder(new TitledBorder("Mapping"));
 
 		Box associationBox = new Box(BoxLayout.Y_AXIS);
 		associationBox.setBorder(new TitledBorder("Associations"));
 
 		Box nodeBox = new Box(BoxLayout.Y_AXIS);
 		nodeBox.setBorder(new TitledBorder("Node"));
-		
+
 		Box outputBox = new Box(BoxLayout.Y_AXIS);
 		outputBox.setBorder(new TitledBorder("Output"));
 
@@ -356,7 +346,6 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 		JButton loadURLb = new JButton("Open URL");
 		Utils.setDefaultSize(loadURLb);
 		loadURLb.addActionListener(new LoadURLSchemaListener());
-
 
 		JButton setIdb = new JButton("Prefix");
 		Utils.setDefaultSize(setIdb);
@@ -379,7 +368,7 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 		JButton checkb = new JButton("Check");
 		Utils.setDefaultSize(checkb);
 		checkb.addActionListener(new CheckListener());
-		
+
 		JButton previewb = new JButton("Preview");
 		Utils.setDefaultSize(previewb);
 		previewb.addActionListener(new PreviewListener());
@@ -427,19 +416,13 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 		genericCancelAssociationb
 				.addActionListener(new GenericCancelAssociationListener());
 
-//		Box associationb1Box = new Box(BoxLayout.Y_AXIS);
-//		associationb1Box.setSize(10,10);
-//		Box associationb2Box = new Box(BoxLayout.Y_AXIS);
-//		Box associationb3Box = new Box(BoxLayout.Y_AXIS);
-//		Box associationb4Box = new Box(BoxLayout.Y_AXIS);
-
 		associationBox.add(flatFileAssociation);
 
 		associationBox.add(duplicableFieldAssociation);
 
 		associationBox.add(fieldAssociation);
 		JButton editFieldb = new JButton("validation");
-		Utils.setDefaultSize(editFieldb);		
+		Utils.setDefaultSize(editFieldb);
 		editFieldb.addActionListener(new EditFieldAssociationListener());
 		associationBox.add(editFieldb);
 		associationBox.add(dictionnaryAssociation);
@@ -447,29 +430,15 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 		associationBox.add(defaultAssociation);
 		associationBox.add(autoGenerationAssociationButton);
 
-//		JScrollPane scrollPane = new JScrollPane(associationLabel);
-//		scrollPane
-//				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//		associationb2Box.add(scrollPane);
 		associationBox.add(genericAssociationb);
 		associationBox.add(genericCancelAssociationb);
-
-//		associationb2Box.add(associationb4Box);
-//		associationb2Box.add(associationb3Box);
-
-//		associationBox.add(associationb2Box);
-//		associationBox.add(associationb1Box);
-
-//		Box lineBox2 = new Box(BoxLayout.Y_AXIS);
-//		Box lineBox3 = new Box(BoxLayout.Y_AXIS);
-
 
 		buttonsPanel.add(treeBox);
 		buttonsPanel.add(associationBox);
 		buttonsPanel.add(nodeBox);
 		buttonsPanel.add(outputBox);
-//		lineBox2.add(lineBox2);
-//		buttonsPanel.add(lineBox3);
+		// lineBox2.add(lineBox2);
+		// buttonsPanel.add(lineBox3);
 		return buttonsPanel;
 	}
 
@@ -522,9 +491,8 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 			list = new JList(dictionaryPanel.getExampleList());
 			JScrollPane scrollList = new JScrollPane(list);
 			list.addListSelectionListener(new SetColumnlistener());
-			add(
-					new JLabel(
-							"Select the field that contains the definition and press OK:"),
+			add(new JLabel(
+					"Select the field that contains the definition and press OK:"),
 					BorderLayout.NORTH);
 			add(scrollList, BorderLayout.CENTER);
 
@@ -550,19 +518,11 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 		public void actionPerformed(ActionEvent e) {
 			JEditorPane editorPane = new JEditorPane();
 			editorPane.setEditable(false);
-//			try {
-//				editorPane.setPage(logoutFile.toURL());
-
-				JScrollPane areaScrollPane = new JScrollPane(editorPane);
-				areaScrollPane
-						.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-				areaScrollPane.setPreferredSize(new Dimension(600, 650));
-				JOptionPane.showMessageDialog(new JFrame(), areaScrollPane);
-//			} catch (IOException ioe) {
-//				JOptionPane.showMessageDialog(new JFrame(),
-//						"Documentation not found.", "Documentation",
-//						JOptionPane.ERROR_MESSAGE);
-//			}
+			JScrollPane areaScrollPane = new JScrollPane(editorPane);
+			areaScrollPane
+					.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+			areaScrollPane.setPreferredSize(new Dimension(600, 650));
+			JOptionPane.showMessageDialog(new JFrame(), areaScrollPane);
 		}
 	}
 
@@ -571,31 +531,38 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 	 */
 	public class CheckListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
+
 			XsdNode node = (XsdNode) ((XsdTreeStructImpl) xsdTree).tree
-			.getLastSelectedPathComponent();
-	
+					.getLastSelectedPathComponent();
+
 			boolean errors = false;
-			
+
 			if (node == null) {
 				node = (XsdNode) ((XsdTreeStructImpl) xsdTree).treeModel
-				.getRoot();
-			}			
+						.getRoot();
+			}
 
-			xsdTree.getMessageManager().sendMessage("[CHECKING] CHECK NODE "+node, MessageManagerInt.simpleMessage);
-			
+			xsdTree.getMessageManager().sendMessage(
+					"[CHECKING] CHECK NODE " + node,
+					MessageManagerInt.simpleMessage);
+
 			if (node == null) {
 				errors = true;
-				xsdTree.getMessageManager().sendMessage("no schema loaded", MessageManagerInt.errorMessage);
+				xsdTree.getMessageManager().sendMessage("no schema loaded",
+						MessageManagerInt.errorMessage);
 				return;
 			} else {
 				errors = !((XsdTreeStructImpl) xsdTree).check(node);
 			}
-			
+
 			if (errors)
-				xsdTree.getMessageManager().sendMessage("[CHECKING] failed, errors have been found", MessageManagerInt.simpleMessage);
-			else 
-				xsdTree.getMessageManager().sendMessage("[CHECKING] no errors found", MessageManagerInt.simpleMessage);
+				xsdTree.getMessageManager().sendMessage(
+						"[CHECKING] failed, errors have been found",
+						MessageManagerInt.simpleMessage);
+			else
+				xsdTree.getMessageManager().sendMessage(
+						"[CHECKING] no errors found",
+						MessageManagerInt.simpleMessage);
 		}
 	}
 
@@ -608,7 +575,8 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 					.getLastSelectedPathComponent();
 
 			if (node == null) {
-				xsdTree.getMessageManager().sendMessage("no node selected", MessageManagerInt.errorMessage);
+				xsdTree.getMessageManager().sendMessage("no node selected",
+						MessageManagerInt.errorMessage);
 				return;
 			}
 
@@ -624,7 +592,7 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 			JFrame frame = new JFrame();
 			frame.setSize(400, 300);
 			frame.getContentPane().add(scrollPane);
-			frame.show();
+			frame.setVisible(true);
 		}
 	}
 
@@ -634,14 +602,12 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 			loadSchema();
 		}
 	}
-	
+
 	public class LoadURLSchemaListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			loadUrlSchema();
 		}
 	}
-
-	
 
 	public class LoadListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -659,12 +625,11 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 				fis.close();
 				((XsdTreeStructImpl) xsdTree).check();
 			} catch (FileNotFoundException fe) {
-				xsdTree.getMessageManager().sendMessage("unable to load file", MessageManagerInt.errorMessage);
-//				JOptionPane.showMessageDialog(new JFrame(),
-//						"Unable to load file",
-//						"[PSI makers: PSI maker] load dictionnary",
-//						JOptionPane.ERROR_MESSAGE);
+				xsdTree.getMessageManager().sendMessage("unable to load file",
+						MessageManagerInt.errorMessage);
 			} catch (Exception ex) {
+				xsdTree.getMessageManager().sendMessage("unable to load file",
+						MessageManagerInt.errorMessage);
 				log.error("pb: ", ex);
 			}
 		}
@@ -676,28 +641,14 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 			XsdNode node = (XsdNode) ((XsdTreeStructImpl) xsdTree).tree
 					.getLastSelectedPathComponent();
 			if (node == null) {
-				xsdTree.getMessageManager().sendMessage("no node selected", MessageManagerInt.errorMessage);
+				xsdTree.getMessageManager().sendMessage("no node selected",
+						MessageManagerInt.errorMessage);
 				return;
 			}
 			xsdTree.duplicateNode(node);
 		}
 	}
 
-//	/** used to duplicate the node selected */
-//	public class DeleteListener implements ActionListener {
-//		public void actionPerformed(ActionEvent e) {
-//			XsdNode node = (XsdNode) ((XsdTreeStructImpl) xsdTree).tree
-//					.getLastSelectedPathComponent();
-//			if (node == null) {
-//				xsdTree.getMessageManager().sendMessage("no node selected", MessageManagerInt.errorMessage);
-//				return;
-//			}
-//			((XsdTreeStructImpl) xsdTree).expendChoices.remove(node
-//					.getPath2String());
-//			((XsdTreeStructImpl) xsdTree).expendChoices.add(null);
-//			xsdTree.duplicateNode(node);
-//		}
-//	}
 
 	/**
 	 * used to replace the node by its original value, if a choice has been
@@ -708,19 +659,19 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 			XsdNode node = (XsdNode) ((XsdTreeStructImpl) xsdTree).tree
 					.getLastSelectedPathComponent();
 			if (node == null) {
-				xsdTree.getMessageManager().sendMessage("no node selected", MessageManagerInt.errorMessage);
+				xsdTree.getMessageManager().sendMessage("no node selected",
+						MessageManagerInt.errorMessage);
 				return;
 			}
 
-			//			if (node.originalParent == null) {
 			if (!node.transparent) {
-				xsdTree.getMessageManager().sendMessage("No choice has been done for this node.", MessageManagerInt.errorMessage);
+				xsdTree.getMessageManager().sendMessage(
+						"No choice has been done for this node.",
+						MessageManagerInt.errorMessage);
 				return;
 			}
 
 			XsdNode parent = (XsdNode) node.getParent();
-
-			int position = parent.getIndex(node);
 
 			xsdTree.undoChoice(node);
 
@@ -745,26 +696,21 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 				doAssociation();
 			}
 
-			if (selectedNode != null && text.trim().length() >0) {
-				xsdTree.getMessageManager().sendMessage("["+selectedNode.getName()+"] " +text.trim(), MessageManagerInt.simpleMessage);
+			if (selectedNode != null && text.trim().length() > 0) {
+				xsdTree.getMessageManager().sendMessage(
+						"[" + selectedNode.getName() + "] " + text.trim(),
+						MessageManagerInt.simpleMessage);
 			}
 		}
 	}
 
 	public void associateFlatFile(XsdNode node, int flatFileIndex) {
 		if (flatFileTabbedPanel.getFlatFileByIndex(0).fileURL == null) {
-			xsdTree.getMessageManager().sendMessage("no flat file has been loaded in selected tab yet", MessageManagerInt.errorMessage);
-//			JOptionPane
-//			.showMessageDialog(
-//					new JFrame(),
-//					"No flat file has been loaded in selected tab yet.",
-//					"associating a file",
-//					JOptionPane.ERROR_MESSAGE);	
+			xsdTree.getMessageManager().sendMessage(
+					"no flat file has been loaded in selected tab yet",
+					MessageManagerInt.errorMessage);
 			return;
 		}
-		
-		
-		XsdNode previousAssociation = null;
 
 		int previousFlatfileAssociated = ((XsdTreeStructImpl) xsdTree).associatedFlatFiles
 				.indexOf(node);
@@ -783,8 +729,8 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 
 		((XsdTreeStructImpl) xsdTree).associateFlatFile(node, flatFileIndex);
 		flatFileTabbedPanel.tabbedPane.setTitleAt(
-				flatFileTabbedPanel.tabbedPane.getSelectedIndex(), node
-						.toString());
+				flatFileTabbedPanel.tabbedPane.getSelectedIndex(),
+				node.toString());
 	}
 
 	public void associateDefaultValue(XsdNode node) {
@@ -828,13 +774,17 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 		int dictionnary = dictionaryPanel.getSelectedDictionnary();
 
 		if (dictionnary == -1) { // no selection
-			xsdTree.getMessageManager().sendMessage("No dictonnary selected", MessageManagerInt.errorMessage);
+			xsdTree.getMessageManager().sendMessage("No dictonnary selected",
+					MessageManagerInt.errorMessage);
 			return;
 		}
 
 		if (dictionaryPanel.getExampleList().length == 0) { // no selection
-			xsdTree.getMessageManager().sendMessage("This dictionnary does not contain any value,"
-					+ " maybe the separator has not been set properly.", MessageManagerInt.errorMessage);
+			xsdTree.getMessageManager()
+					.sendMessage(
+							"This dictionnary does not contain any value,"
+									+ " maybe the separator has not been set properly.",
+							MessageManagerInt.errorMessage);
 			return;
 		}
 
@@ -847,7 +797,8 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 			return;
 
 		if (node == null) {
-			xsdTree.getMessageManager().sendMessage("No node selected", MessageManagerInt.errorMessage);
+			xsdTree.getMessageManager().sendMessage("No node selected",
+					MessageManagerInt.errorMessage);
 			return;
 		}
 
@@ -858,12 +809,15 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 	public void associateField(XsdNode node) {
 		String path = flatFileTabbedPanel.getSelectedPath();
 		if (!path.matches("([0-9]+\\.)*[0-9]+")) {
-			xsdTree.getMessageManager().sendMessage("No field selected " + path, MessageManagerInt.errorMessage);
+			xsdTree.getMessageManager()
+					.sendMessage("No field selected " + path,
+							MessageManagerInt.errorMessage);
 			return;
 		}
 
 		if (node == null) {
-			xsdTree.getMessageManager().sendMessage("No node selected", MessageManagerInt.errorMessage);
+			xsdTree.getMessageManager().sendMessage("No node selected",
+					MessageManagerInt.errorMessage);
 			return;
 		}
 
@@ -876,7 +830,8 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 					.getLastSelectedPathComponent();
 
 			if (selectedNode == null) {
-				xsdTree.getMessageManager().sendMessage("No node selected", MessageManagerInt.errorMessage);
+				xsdTree.getMessageManager().sendMessage("No node selected",
+						MessageManagerInt.errorMessage);
 				return;
 			}
 
@@ -894,8 +849,7 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 				((XsdTreeStructImpl) xsdTree)
 						.cancelAssociateFlatFile(selectedNode);
 
-			}
-			else if (duplicableFieldAssociation.isSelected()) {
+			} else if (duplicableFieldAssociation.isSelected()) {
 				((XsdTreeStructImpl) xsdTree)
 						.cancelDuplicableField(selectedNode);
 				return;
@@ -908,7 +862,8 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 		public void actionPerformed(ActionEvent e) {
 
 			if (((XsdTreeStructImpl) xsdTree).rootNode == null) {
-				xsdTree.getMessageManager().sendMessage("No schema loaded", MessageManagerInt.errorMessage);
+				xsdTree.getMessageManager().sendMessage("No schema loaded",
+						MessageManagerInt.errorMessage);
 				return;
 			}
 
@@ -926,7 +881,7 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 			JFrame frame = new JFrame();
 			frame.setSize(400, 300);
 			frame.getContentPane().add(new JScrollPane(editorPane));
-			frame.show();
+			frame.setVisible(true);
 		}
 	}
 
@@ -949,15 +904,11 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 				out.close();
 
 			} catch (FileNotFoundException fe) {
-				xsdTree.getMessageManager().sendMessage("unable to write file", MessageManagerInt.errorMessage);
-//				JOptionPane.showMessageDialog(new JFrame(),
-//						"unable to write file", "XML maker",
-//						JOptionPane.ERROR_MESSAGE);
+				xsdTree.getMessageManager().sendMessage("unable to write file",
+						MessageManagerInt.errorMessage);
 			} catch (IOException ex) {
-				xsdTree.getMessageManager().sendMessage("unable to write file", MessageManagerInt.errorMessage);
-//				JOptionPane.showMessageDialog(new JFrame(),
-//						"unable to write file", "XML maker",
-//						JOptionPane.ERROR_MESSAGE);
+				xsdTree.getMessageManager().sendMessage("unable to write file",
+						MessageManagerInt.errorMessage);
 			}
 		}
 	}
@@ -978,9 +929,8 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 		try {
 			((XsdTreeStructImpl) xsdTree).tree
 					.setCellRenderer(new XsdTreeRenderer());
-		} catch (Exception e) {
-			log.error(xsdTree + ", "
-					+ ((XsdTreeStructImpl) xsdTree).tree, e);
+		} catch (Exception e) {		
+			log.error(xsdTree + ", " + ((XsdTreeStructImpl) xsdTree).tree, e);
 		}
 	}
 
@@ -1028,36 +978,32 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 			switch (((Annotated) node.getUserObject()).getStructureType()) {
 			case Structure.ATTRIBUTE:
 				try {
-				setText(getText()
-						+ " ("
-						+ ((AttributeDecl) node.getUserObject())
-								.getSimpleType().getName() + ")      ");
-				} catch (java.lang.NullPointerException npe) {
-					/* no type defined, assume it's text */ 
 					setText(getText()
 							+ " ("
-							+ "no type" + ")      ");
+							+ ((AttributeDecl) node.getUserObject())
+									.getSimpleType().getName() + ")      ");
+				} catch (java.lang.NullPointerException npe) {
+					/* no type defined, assume it's text */
+					setText(getText() + " (" + "no type" + ")      ");
 				}
 				break;
 			case Structure.ELEMENT:
 				String type = null;
-				try {
+				
+				if (null != ((ElementDecl) node.getUserObject()).getType()) {
 					type = ((ElementDecl) node.getUserObject()).getType()
 							.getName();
-				} catch (NullPointerException npe) {
-					/* no type defined */
-					log.warn("WARNING: no type declaration for element "
-									+ node.toString());
 				}
+				
 				int max = node.max;
 				String text = getText();
-				try {
+				if (null != ((ElementDecl) node.getUserObject()).getType() 
+						.getBaseType()) {
 					text += " ["
 							+ ((ElementDecl) node.getUserObject()).getType()
 									.getBaseType().getName() + "]";
-				} catch (Exception e) {
-					/* no base type */
 				}
+				
 				text += " (";
 				if (type != null)
 					text += type + ", ";
@@ -1088,18 +1034,19 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 			}
 
 			setForeground(Color.LIGHT_GRAY);
-			
-			
+
 			XsdNode node2check = node;
-			/* in case of transparent node: look at the first child:
-			 * transparent node are only the one used for making a choice, and have always only one child;
+			/*
+			 * in case of transparent node: look at the first child: transparent
+			 * node are only the one used for making a choice, and have always
+			 * only one child;
 			 */
-			if (node.transparent && node.getChildCount() > 0 )
+			if (node.transparent && node.getChildCount() > 0)
 				node2check = (XsdNode) node.getChildAt(0);
-			
+
 			if (node2check.transparent)
 				setForeground(Color.LIGHT_GRAY);
-			
+
 			if (node2check.isUsed())
 				setForeground(Color.BLACK);
 
@@ -1118,15 +1065,10 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 					.contains(node2check))
 				setForeground(Color.GREEN);
 
-
-
 			return this;
 		}
 	}
 
-//	public void reload() {
-//		super.reload();
-//	}
 
 	/**
 	 * print a xml output for the whole file
@@ -1137,11 +1079,11 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 		public void actionPerformed(ActionEvent e) {
 
 			if (((XsdTreeStructImpl) xsdTree).rootNode == null) {
-				xsdTree.getMessageManager().sendMessage("No schema loaded", MessageManagerInt.errorMessage);
+				xsdTree.getMessageManager().sendMessage("No schema loaded",
+						MessageManagerInt.errorMessage);
 				return;
 			}
 
-//			TreeNode[] path = ((XsdTreeStructImpl) xsdTree).rootNode.getPath();
 			try {
 				String defaultDirectory = Utils.lastVisitedDirectory;
 				if (Utils.lastVisitedOutputDirectory != null)
@@ -1162,21 +1104,28 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 				File out = fileChooser.getSelectedFile();
 
 				MarshallingObserver observer = new MarshallingObserver();
-				observer
-						.setObservable(((XsdTreeStructImpl) xsdTree).observable);
+				observer.setObservable(((XsdTreeStructImpl) xsdTree).observable);
 				((XsdTreeStructImpl) xsdTree).observable.addObserver(observer);
-				
-				Date DateCurrent=new Date(System.currentTimeMillis());
-				
-				xsdTree.getMessageManager().sendMessage("[CREATE XML] start writting XML document: "+ DateCurrent.toGMTString(), MessageManagerInt.simpleMessage);
+
+				Date DateCurrent = new Date(System.currentTimeMillis());
+
+				xsdTree.getMessageManager().sendMessage(
+						"[CREATE XML] start writting XML document: "
+								+ DateCurrent.toGMTString(),
+						MessageManagerInt.simpleMessage);
 				((XsdTreeStructImpl) xsdTree).print2(out);
-				DateCurrent=new Date(System.currentTimeMillis());
-				xsdTree.getMessageManager().sendMessage("[CREATE XML] finished writting XML document: "+ DateCurrent.toGMTString(), MessageManagerInt.simpleMessage);
-				
+				DateCurrent = new Date(System.currentTimeMillis());
+				xsdTree.getMessageManager().sendMessage(
+						"[CREATE XML] finished writting XML document: "
+								+ DateCurrent.toGMTString(),
+						MessageManagerInt.simpleMessage);
+
 			} catch (FileNotFoundException fe) {
-				xsdTree.getMessageManager().sendMessage("unable to write file", MessageManagerInt.errorMessage);
+				xsdTree.getMessageManager().sendMessage("unable to write file",
+						MessageManagerInt.errorMessage);
 			} catch (IOException ex) {
-				xsdTree.getMessageManager().sendMessage("unable to write file", MessageManagerInt.errorMessage);
+				xsdTree.getMessageManager().sendMessage("unable to write file",
+						MessageManagerInt.errorMessage);
 			}
 		}
 
@@ -1232,12 +1181,15 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 					.getLastSelectedPathComponent();
 
 			if (node == null) {
-				xsdTree.getMessageManager().sendMessage("no node selected", MessageManagerInt.errorMessage);
+				xsdTree.getMessageManager().sendMessage("no node selected",
+						MessageManagerInt.errorMessage);
 				return;
 			}
 			if (!((XsdTreeStructImpl) xsdTree).associatedFields
 					.containsKey(node)) {
-				xsdTree.getMessageManager().sendMessage("this node is not associated to a field", MessageManagerInt.errorMessage);
+				xsdTree.getMessageManager().sendMessage(
+						"this node is not associated to a field",
+						MessageManagerInt.errorMessage);
 				return;
 			}
 
@@ -1260,7 +1212,9 @@ public class XsdTreePanelImpl extends psidev.psi.mi.filemakers.xsd.AbstractXsdTr
 				try {
 					Pattern.compile(afp.regexp.getText().trim());
 				} catch (java.util.regex.PatternSyntaxException pse) {
-					xsdTree.getMessageManager().sendMessage("unvalid regular expression", MessageManagerInt.errorMessage);
+					xsdTree.getMessageManager().sendMessage(
+							"unvalid regular expression",
+							MessageManagerInt.errorMessage);
 					return;
 				}
 			}
