@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Observable;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
@@ -88,8 +90,7 @@ public abstract class AbstractXsdTreeStruct extends Observable {
 	
 	public void loadSchema(URL schemaUrl) throws FileNotFoundException, IOException {
 		emptySelectionLists();
-		
-		
+				
 		this.schemaURL = schemaUrl;
 
 		InputStream in = schemaURL.openStream();
@@ -105,6 +106,9 @@ public abstract class AbstractXsdTreeStruct extends Observable {
 			}
 
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Cannot load the schema.", "ERROR",
+					JOptionPane.ERROR_MESSAGE);
 			log.error(e);
 		}
 		
