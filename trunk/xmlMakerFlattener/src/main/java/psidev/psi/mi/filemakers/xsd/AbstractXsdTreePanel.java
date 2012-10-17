@@ -66,6 +66,14 @@ public abstract class AbstractXsdTreePanel extends JPanel {
 		// xsdTree.tree.setShowsRootHandles(true);
 	}
 
+	public void loadURLSchema(URL url) throws FileNotFoundException, IOException {
+		xsdTree.loadSchema(url);
+
+		ToolTipManager.sharedInstance().registerComponent(xsdTree.tree);
+		setCellRenderer();
+		xsdTree.tree.addTreeSelectionListener(new XsdTreeSelectionListener());
+		// xsdTree.tree.setShowsRootHandles(true);
+	}
 	
 	public JScrollPane scrollPane;
 
@@ -132,7 +140,7 @@ public abstract class AbstractXsdTreePanel extends JPanel {
 			return;
 		}
 		try {
-			xsdTree.loadSchema(fileChooser.getSelectedFile().toURI().toURL());
+			loadURLSchema(fileChooser.getSelectedFile().toURI().toURL());
 			xsdTree.getMessageManager().sendMessage(
 					"XML schema " + fileChooser.getSelectedFile().getName()
 							+ " successfully loaded.",
@@ -193,7 +201,7 @@ public abstract class AbstractXsdTreePanel extends JPanel {
 	 */
 	public class XsdTreeSelectionListener implements TreeSelectionListener {
 		public void valueChanged(TreeSelectionEvent e) {
-			XsdNode node = (XsdNode) xsdTree.tree
+					XsdNode node = (XsdNode) xsdTree.tree
 					.getLastSelectedPathComponent();
 			if (node == null)
 				return;
