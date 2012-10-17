@@ -36,6 +36,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -180,9 +181,22 @@ public class XmlFlattenerGui extends JFrame {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
+		/*
+		 * Load look'n feel
+		 */
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e){
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception e2) {
+				
+			}
+		}
+		
 		XmlFlattenerGui f = new XmlFlattenerGui();
-
+		
 		Options options = new Options();
 
 		Option option = new Option("mapping", true, "Mapping file");

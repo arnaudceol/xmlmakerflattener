@@ -40,6 +40,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.TitledBorder;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -148,7 +150,7 @@ public class XmlMakerGui extends JFrame {
 
 			Utils.lastVisitedDirectory = mappingFile.getPath();
 			Utils.lastVisitedMappingDirectory = mappingFile.getPath();
-			// Utils.lastMappingFile = mappingFile.getName();
+			
 			// Create XML encoder.
 			XMLDecoder xdec = new XMLDecoder(fin);
 
@@ -270,7 +272,6 @@ public class XmlMakerGui extends JFrame {
 					"[PSI makers: PSI maker] load mapping",
 					JOptionPane.ERROR_MESSAGE);
 		} catch (NoSuchElementException nsee) {
-			nsee.printStackTrace();
 			JOptionPane.showMessageDialog(new JFrame(), "Unable to load file",
 					"[PSI makers]", JOptionPane.ERROR_MESSAGE);
 		}
@@ -341,13 +342,6 @@ public class XmlMakerGui extends JFrame {
 
 	public XmlMakerGui() {
 		super("XML Maker");
-
-		/* look n'feel */
-		try {
-			// UIManager.setLookAndFeel(new TonicLookAndFeel());
-		} catch (Exception e) {
-			System.out.println("Unable to load look'n feel");
-		}
 
 		getContentPane().setLayout(new BorderLayout());
 
@@ -498,7 +492,18 @@ public class XmlMakerGui extends JFrame {
 	public static void main(String[] args) {
 
 		Options options = new Options();
-
+		
+		// Load look'n feel
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e){
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception e2) {
+				
+			}
+		}
+		
 		// create Option objects
 		Option helpOpt = new Option("help", "print this message.");
 		options.addOption(helpOpt);
@@ -548,7 +553,6 @@ public class XmlMakerGui extends JFrame {
 
 		// These argument are mandatory.
 		mappingFileName = line.getOptionValue("mapping");
-		System.out.println("mapping: " + mappingFileName);
 
 		XmlMakerGui xml = new XmlMakerGui();
 
